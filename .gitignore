@@ -9,3 +9,4 @@ bin/
 lib/
 pyvenv.cfg
 .vscode
+conf/secrets.json
