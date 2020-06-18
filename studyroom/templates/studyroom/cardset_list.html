@@ -33,7 +33,7 @@ title, content, author, created_at
                             {{ n.get_markdown_content | safe }}
                         </div>
                         {% if post.author == request.user %}
-                            <button onclick="delete_notice({{n.pk}})">삭제</button>
+                        <button onclick="delete_notice({{n.pk}})">삭제</button>
                         {% endif%}
                     </div>
                 </div>
@@ -286,98 +286,85 @@ title, content, author, created_at
                 <div class="col-sm">
                     <div id="comment-list">
                         {% for comment_room in comment_rooms %}
-                            <div>
-                                {% if user == post.author %}
-                                <div style="font-size: 20px; color: red;">
-                                    {{comment_room.participant}}
-                                </div>
-                                {% endif %}
-                                <!-- Comments Form -->
-                                <div class="card my-4">
-                                    <h5 class="card-header">Leave a Comment:</h5>
-                                    <div class="card-body">
-                                        <form method="post" action="{{ object.get_absolute_url }}create_comment/{{comment_room.participant}}/">
-                                            {% csrf_token %}
-                                            <div class="form-group">
-                                                {{ comment_form | crispy }}
-                                            </div>
-                                            {% if user.is_authenticated %}
-                                            <button type="submit" class="btn btn-primary">Submit</button>
-                                            {% else %}
-                                            <div class="alert alert-dismissible alert-info">
-                                                <button type="button" class="close" data-dismiss="alert">&times;</button>
-                                                <strong>환영합니다.</strong><a href="#" class="alert-link"> 댓글을 달기위해서 로그인 해주세요.</a>
-                                            </div>
-                                            <!--            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#loginModal">Submit</button>-->
-                                            {% endif %}
-                                        </form>
-                                    </div>
-                                </div>
-                                {% for comment in comment_room.scomments.all %}
-                                <div class="media mb-4" id="comment-id-{{ comment.pk }}">
-                                    {% if comment.author.socialaccount_set.all.0.get_avatar_url %}
-                                    <img width="50px" class="d-flex mr-3 rounded-circle" src="{{ comment.author.socialaccount_set.all.0.get_avatar_url }}" alt="">
-                                    {% else %}
-                                    <img width="50px" class="d-flex mr-3 rounded-circle" src="https://api.adorable.io/avatars/285/{{ comment.author }}.png" alt="">
-                                    {% endif %}
-                                    <div class="media-body">
-                                        {% if comment.author == request.user %}
-                                        <button class="btn btn-sm btn-info float-right" onclick="location.href='/studyroom/edit_comment/{{ comment.pk }}/{{ post.pk }}/'">edit</button>
-                                        <button class="btn btn-sm btn-warning float-right" data-toggle="modal" data-target="#deleteCommentModal-{{ comment.pk }}">delete</button>
-                                        {% endif %}
-                                        <h5 class="mt-0">{{ comment.author }} <small class="text-muted">{{ comment.created_at }}</small></h5>
-                                        {{ comment.get_markdown_content | safe }}
-                                    </div>
-                                </div>
-                                {% endfor %}
+                        <div>
+                            {% if user == post.author %}
+                            <div style="font-size: 20px; color: red;">
+                                {{comment_room.participant}}
                             </div>
+                            {% endif %}
+                            <!-- Comments Form -->
+                            <div class="card my-4">
+                                <h5 class="card-header">Leave a Comment:</h5>
+                                <div class="card-body">
+                                    <form method="post" action="{{ object.get_absolute_url }}create_comment/{{comment_room.participant}}/">
+                                        {% csrf_token %}
+                                        <div class="form-group">
+                                            {{ comment_form | crispy }}
+                                        </div>
+                                        {% if user.is_authenticated %}
+                                        <button type="submit" class="btn btn-primary">Submit</button>
+                                        {% else %}
+                                        <div class="alert alert-dismissible alert-info">
+                                            <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                            <strong>환영합니다.</strong><a href="#" class="alert-link"> 댓글을 달기위해서 로그인 해주세요.</a>
+                                        </div>
+                                        <!--            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#loginModal">Submit</button>-->
+                                        {% endif %}
+                                    </form>
+                                </div>
+                            </div>
+                            {% for comment in comment_room.scomments.all %}
+                            <div class="media mb-4" id="comment-id-{{ comment.pk }}">
+                                {% if comment.author.socialaccount_set.all.0.get_avatar_url %}
+                                <img width="50px" class="d-flex mr-3 rounded-circle" src="{{ comment.author.socialaccount_set.all.0.get_avatar_url }}" alt="">
+                                {% else %}
+                                <img width="50px" class="d-flex mr-3 rounded-circle" src="https://api.adorable.io/avatars/285/{{ comment.author }}.png" alt="">
+                                {% endif %}
+                                <div class="media-body">
+                                    {% if comment.author == request.user %}
+                                    <button class="btn btn-sm btn-info float-right" onclick="location.href='/studyroom/edit_comment/{{ comment.pk }}/{{ post.pk }}/'">edit</button>
+                                    <button class="btn btn-sm btn-warning float-right" data-toggle="modal" data-target="#deleteCommentModal-{{ comment.pk }}">delete</button>
+                                    {% endif %}
+                                    <h5 class="mt-0">{{ comment.author }} <small class="text-muted">{{ comment.created_at }}</small></h5>
+                                    {{ comment.get_markdown_content | safe }}
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
                         {% endfor %}
                     </div>
 
                     {% for comment_room in comment_rooms %}
-                        {% for comment in comment_room.scomments.all %}
-                            {% if user == comment.author %}
-                            <!-- DeleteCommentModal -->
-                            <div class="modal fade" id="deleteCommentModal-{{ comment.pk }}" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                                <div class="modal-dialog">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="staticBackdropLabel">정말로 삭제하시겠습니까?</h5>
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
-                                        </div>
-                                        <div class="modal-body">
-                                            <p>{{ comment.get_markdown_content | safe }}</p>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                            <button type="button" class="btn btn-primary" onclick="location.href='/studyroom/delete_comment/{{ comment.pk }}/{{ post.pk }}/'">Delete</button>
-                                        </div>
-                                    </div>
+                    {% for comment in comment_room.scomments.all %}
+                    {% if user == comment.author %}
+                    <!-- DeleteCommentModal -->
+                    <div class="modal fade" id="deleteCommentModal-{{ comment.pk }}" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="staticBackdropLabel">정말로 삭제하시겠습니까?</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <p>{{ comment.get_markdown_content | safe }}</p>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    <button type="button" class="btn btn-primary" onclick="location.href='/studyroom/delete_comment/{{ comment.pk }}/{{ post.pk }}/'">Delete</button>
                                 </div>
                             </div>
-                            {% endif %}
-                        {% endfor %}
+                        </div>
+                    </div>
+                    {% endif %}
+                    {% endfor %}
                     {% endfor %}
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="container">
-        <div class="row">
-            <div class="col-sm bg-info">
-                <h3>one</h3>
-            </div>
-            <div class="col-sm bg-light">
-                <h3>two</h3>
-            </div>
-            <div class="col-sm bg-danger">
-                <h3>three</h3>
-            </div>
-        </div>
-    </div>
     <hr>
 </div>
 </div>
@@ -385,7 +372,7 @@ title, content, author, created_at
 <!-- Footer -->
 <footer class="py-5 bg-dark">
     <div class="container">
-        <p class="m-0 text-center text-white">Copyright &copy; Your Website 2019</p>
+        <p class="m-0 text-center text-white">Copyright &copy; EduOcean 2020</p>
     </div>
     <!-- /.container -->
 </footer>
