@@ -109,5 +109,5 @@ class Scomment(models.Model):
         return markdown(self.text)
 
     def get_absolute_url(self):
-        return "/studyroom/study_room/" + str(self.post.pk) + '#comment-id-{}'.format(self.pk)
+        return "/studyroom/study_room/" + str(self.comment_room.post.pk) + '#comment-id-{}'.format(self.pk)
 
