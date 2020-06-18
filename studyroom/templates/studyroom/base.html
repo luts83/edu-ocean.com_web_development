@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}EduOcean{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <link rel="stylesheet" href="{% static 'blog/bootstrap/bootstrap.css' %}" media="screen">
+    <link rel="stylesheet" href="{% static 'blog/assets/css/custom.min.css' %}">
+    <!--    &lt;!&ndash; Font Awesome &ndash;&gt;-->
+    <!--    <link rel="stylesheet" href="{% static 'blog/assets/css/fontawesome.css' %}">-->
+    <!-- Material Design Bootstrap -->
+    <!--    <link href="{% static 'blog/assets/css/mdb.css' %}" rel="stylesheet">-->
+    <!-- Your custom styles (optional) -->
+    <!--    <link href="{% static 'blog/assets/css/style.min.css' %}" rel="stylesheet">-->
+    <!-- Font Awesome -->
+    <!--    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">-->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+</head>
+
+{% include 'basecamp/nav_bar.html' %}
+
+<body>
+<div class="container">
+
+    <div class="row">
+        <!-- Blog Entries Column -->
+        <div class="col-md-8" id="main-div">
+            {% block content %}
+            {% endblock %}
+        </div>
+
+        <div class="col-md-4" id="side-div">
+            <!-- Search Widget -->
+            <div class="card my-4">
+                <h5 class="card-header">Search</h5>
+                <div class="card-body">
+                    <div class="input-group">
+                        <input type="text" id="search-input" onkeyup="wait_for_enterkey()" class="form-control" placeholder="Search for..."/>
+                        <span class="input-group-btn">
+                                <button class="btn btn-secondary" type="button" onclick="search_post();">Go!</button>
+                            </span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Categories Widget -->
+            <div class="card my-4" id="category-card">
+                <h5 class="card-header">Categories</h5>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <ul class="list-unstyled mb-0">
+                                {% for category in category_list %}
+                                <li>
+                                    <a href="{{ category.get_absolute_url }}">{{ category.name }} ({{ category.post_set.count }})</a>
+                                </li>
+                                {% endfor %}
+                                <li>
+                                    <a href="/blog/category/_none/">기타 ({{ posts_without_category }})</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Side Widget -->
+<div class="card my-4">
+    <h5 class="card-header">Side Widget</h5>
+    <div class="card-body">
+        You can put anything you want inside of these side widgets. They are easy to use, and feature the new Bootstrap 4 card containers!
+    </div>
+</div>
+
+<!-- /.row -->
+
+</body>
+
+
+
+</html>
+
+
+<script>
+    function search_post(){
+        var search_value = document.getElementById('search-input').value;
+        location.href="/blog/search/" + search_value + "/";
+    }
+
+    function wait_for_enterkey(){
+        if (window.event.keyCode == 13){
+            search_post();
+        }
+    }
+</script>
+
+
+
+
+<script src="{% static 'blog/assets/js/jquery.min.js' %}"></script>
+<script src="{% static 'blog/assets/js/popper.min.js' %}"></script>
+<script src="{% static 'blog/assets/js/bootstrap.min.js' %}"></script>
+<script src="{% static 'blog/assets/js/custom.js' %}"></script>
+

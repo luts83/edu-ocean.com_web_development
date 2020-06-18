@@ -1,0 +1,30 @@
+{% extends 'basecamp/base_full.html' %}
+{% block content %}
+{% load static %}
+<br>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12 mb-5">
+            <h2><strong>Vocabulary</strong></h2>
+            <hr>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="card m-1" id="post-card-{{ i.pk }}">
+                <div class="card-body" id="main-title">
+                    <h5 class="card-title">제시된 보기와 같은 뜻의 단어를 고르시오 : <strong>{{card.front}}</strong></h5>
+                    {% for c in cards %}
+                    <form method="POST">
+                        {% csrf_token %}
+                        <input type="hidden" value="{{card.id}}" name="cid" />
+                        <input type="hidden" value="{{c.back}}" name="cresult" />
+                        <button type="submit" class="btn btn-primary">{{c.back}}</button>
+                    </form>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,120 @@
+<!--<!DOCTYPE html>-->
+<!--<html lang="en">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <title>Title</title>-->
+<!--</head>-->
+<!--<body>-->
+
+<!--</body>-->
+<!--</html>-->
+
+
+<!-- Content -->
+<div id="content" class="colM">
+
+    <h1>Add post</h1>
+    <div id="content-main">
+        <form enctype="multipart/form-data" action="" method="post" id="post_form" novalidate><input type="hidden" name="csrfmiddlewaretoken" value="B91r8gISPgdOuN2PvotG4hA8Tzt3yl1G4dnA5HZnK7TFAN6BD4tbianTMJjnzL05">
+            <div>
+                <fieldset class="module aligned ">
+                    <div class="form-row field-title">
+                        <div>
+                            <label class="required" for="id_title">Title:</label>
+                            <input type="text" name="title" class="vTextField" maxlength="100" required id="id_title">
+                        </div>
+                    </div>
+                    <div class="form-row field-head_image">
+                        <div>
+                            <label for="id_head_image">Head image:</label>
+                            <input type="file" name="head_image" accept="image/*" id="id_head_image">
+                        </div>
+                    </div>
+                    <div class="form-row field-content">
+                        <div>
+                            <label class="required" for="id_content">Content:</label>
+                            <div class="markdownx">
+    <textarea name="content" cols="40" rows="10" required id="id_content" class="markdownx-editor markdownx-editor" data-markdownx-editor-resizable data-markdownx-urls-path="/markdownx/markdownify/" data-markdownx-upload-urls-path="/markdownx/upload/" data-markdownx-latency="500">
+</textarea>
+                                <div class="markdownx-preview"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row field-author">
+                        <div>
+                            <label class="required" for="id_author">Author:</label>
+                            <div class="related-widget-wrapper">
+                                <select name="author" required id="id_author">
+                                    <option value="3">lee.sanggean</option>
+                                    <option value="1" selected>luts83</option>
+                                    <option value="5">sangjin</option>
+                                    <option value="6">yoyoland</option>
+                                </select>
+                                <a class="related-widget-wrapper-link change-related" id="change_id_author"
+                                   data-href-template="/admin/auth/user/__fk__/change/?_to_field=id&amp;_popup=1"
+                                   title="Change selected user"><img src="/static/admin/img/icon-changelink.svg" alt="Change"></a><a class="related-widget-wrapper-link add-related" id="add_id_author"
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row field-category">
+                        <div>
+                            <label for="id_category">Category:</label>
+                            <div class="related-widget-wrapper">
+                                <select name="category" id="id_category">
+                                    <option value="" selected>---------</option>
+                                    <option value="3">영어</option>
+                                </select>
+                                <a class="related-widget-wrapper-link change-related" id="change_id_category"
+                                   data-href-template="/admin/blog/category/__fk__/change/?_to_field=id&amp;_popup=1"
+                                   title="Change selected category"><img src="/static/admin/img/icon-changelink.svg" alt="Change"></a><a class="related-widget-wrapper-link add-related" id="add_id_category"
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row field-tags">
+                        <div>
+                            <label for="id_tags">Tags:</label>
+                            <div class="related-widget-wrapper">
+                                <select name="tags" id="id_tags" multiple>
+                                    <option value="1">트럼프</option>
+                                    <option value="2">중공</option>
+                                    <option value="3">홍콩</option>
+                                    <option value="4">해외뉴스</option>
+                                    <option value="5">이태원</option>
+                                    <option value="6">코로나</option>
+                                </select>
+                                <a class="related-widget-wrapper-link add-related" id="add_id_tags"
+                                   href="/admin/blog/tag/add/?_to_field=id&amp;_popup=1"
+                                   title="Add another tag"><img src="/static/admin/img/icon-addlink.svg" alt="Add"></a>
+                            </div>
+                            <div class="help">Hold down “Control”, or “Command” on a Mac, to select more than one.</div>
+                        </div>
+                    </div>
+                </fieldset>
+                <div class="submit-row">
+                    <input type="submit" value="Save" class="default" name="_save">
+                    <input type="submit" value="Save and add another" name="_addanother">
+                    <input type="submit" value="Save and continue editing" name="_continue">
+                </div>
+                <script type="text/javascript"
+                        id="django-admin-form-add-constants"
+                        src="/static/admin/js/change_form.js"
+                        data-model-name="post"
+                >
+                </script>
+                <script type="text/javascript"
+                        id="django-admin-prepopulated-fields-constants"
+                        src="/static/admin/js/prepopulate_init.js"
+                        data-prepopulated-fields="[]">
+                </script>
+            </div>
+        </form></div>
+    <br class="clear">
+</div>
+<!-- END Content -->
+
+<div id="footer"></div>
+</div>
+<!-- END Container -->
+
+</body>
+</html>

@@ -1,0 +1,265 @@
+{% extends 'blog/base.html/' %}
+{% block content %}
+{% load static %}
+<div class="row">
+    <h1 class="my-4" id="blog-list-title">
+        <a href="/"><img class="img-fluid" width="150" alt="EduOcean_Title"
+                src="{% static 'basecamp/images/title_b.png' %}" /></a>
+        {% if category %}<small class="text-muted">: {{ category }}</small>{% endif %}
+        {% if tag %}<small class="text-muted">: {{ tag }}</small>{% endif %}
+        {% if search_info %}<small class="text-muted">: {{ search_info }} ({{ object_list.count }})</small>{% endif %}
+    </h1>
+</div>
+
+{% comment %} 공지사항 시작 {% endcomment %}
+{% comment %}
+title, content, author, created_at
+리스트(참여자), 생성 및 수정 페이지(방장), 디테일 페이지(참여자)
+1. 모델
+2. 리스트 -> 테스트는 관리자
+3. 디테일(삭제)
+4. 생성 및 수정
+{% endcomment %}
+<div class="row  mb-4">
+    <div class="col-12">
+
+        <h3>공지사항</h3>
+
+    </div>
+    <div class="col-12">
+        <ul style="display:block;">
+            {% for n in notices %}
+            <li class='mt-2'>
+                <div class="col-12">
+                    <button class="btn btn-primary col-12" type="button" data-toggle="collapse"
+                        data-target="#collapseExample_{{ n.id }}" aria-expanded="false"
+                        aria-controls="collapseExample_{{n.id}}">
+                        {{ n.title }}
+                        </h4>
+                </div>
+                <div class="col-12 mt-2">
+                    <div class="collapse" id="collapseExample_{{ n.id }}">
+                        <div class="card card-body">
+                            {{ n.content|safe }}
+                        </div>
+                    </div>
+                </div>
+            </li>
+            {% empty %}
+            <li>공지사항이 없습니다.</li>
+            {% endfor %}
+
+        </ul>
+    </div>
+    {% if post.author == request.user %}
+    <div class="col-12 mb-4">
+
+        <button class="btn btn-primary col-12" data-toggle="collapse" data-target="#write_notice" aria-expanded="false"
+            aria-controls="write_notice">
+            공지 작성
+        </button>
+
+    </div>
+    <div class="card col-12 collapse" id="write_notice">
+        <h5 class="card-header">Leave a Comment:</h5>
+        <div class="card-body">
+            <form method="post" action={% url 'studyroom:write_notice' pk=post.id %}>
+                {% csrf_token %}
+                <div class="form-group">
+                    {{ notice_form.as_p}}
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+    </div>
+
+    {% endif %}
+</div>
+{% comment %} 공지사항 끝 {% endcomment %}
+
+{% comment %} 유튜브 강좌 {% endcomment %}
+<div class="row">
+    <iframe id="ytplayer" type="text/html" width="640" height="360" src="https://www.youtube.com/embed/PnhmeFakkXg"
+        frameborder="0"></iframe>
+</div>
+{% comment %} 유튜브 강좌 {% endcomment %}
+
+
+{% comment %} 카드셋 시작 {% endcomment %}
+{% if object_list.exists %}
+<div class="row">
+    {% for i in object_list %}
+    <!-- Blog Post -->
+    <div class="col-4 mb-4 p-1">
+        <div class="card" id="post-card-{{ i.pk }}">
+            <div class="card-body" id="main-title">
+                <h5 class="card-title">{{i.name}}</h5>
+                <a href="/try/{{i.id}}/" class="btn btn-primary">입장</a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% if is_paginated %}
+<!-- Pagination -->
+<ul class="pagination justify-content-center mb-4">
+
+    {% if page_obj.has_previous %}
+    <li class="page-item">
+        <a class="page-link" href="?page={{ page_obj.previous_page_number }}">&larr; Previous </a>
+    </li>
+    {% else %}
+    <li class="page-item disabled">
+        <a class="page-link" href="#">&larr; Previous</a>
+    </li>
+    {% endif %}
+
+    {% if page_obj.has_next %}
+    <li class="page-item">
+        <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next &rarr;</a>
+    </li>
+    {% else %}
+    <li class="page-item disabled">
+        <a class="page-link" href="#">Next &rarr;</a>
+    </li>
+    {% endif %}
+</ul>
+{% endif %}
+<a href="/try/{{ cardset_id }}/total/" class="btn btn-primary justify-content-center mb-4">
+    전체 결과 보기
+</a>
+{% else %}
+<h3>아직 게시물이 없습니다. </h3>
+{% endif %}
+{% comment %} 카드셋 끝 {% endcomment %}
+
+{% comment %} 그래프 {% endcomment %}
+<div class="row">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+    <div class="col-6">
+        <canvas id="myChart" style="width: 100%; height: 150px;"></canvas>
+        <script>
+            var ctx = document.getElementById('myChart').getContext('2d');
+            var myChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['My score', 'Average score'],
+                    datasets: [{
+
+                        data: [{{my_average}},{{average}}],
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.2)',
+                            'rgba(54, 162, 235, 0.2)',
+
+                        ],
+                        borderColor: [
+                            'rgba(255, 99, 132, 1)',
+                            'rgba(54, 162, 235, 1)',
+
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero: true
+                            }
+                        }]
+                    }
+                }
+            });
+        </script>
+
+    </div>
+    <div class="col-6">
+        <canvas id="proceedingChart" style="width: 100%; height: 150px;"></canvas>
+        <script>
+            var ctx = document.getElementById('proceedingChart').getContext('2d');
+            var myChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: [
+                    {% comment %} 참여자 이름 나열 {% endcomment %}
+                    {% for p in upload_chart_data %}
+                        '{{ p }}',
+                    {% endfor %}
+
+                    ],
+                    datasets: [{
+                        data: [
+
+                            {% comment %} {{my_average}},{{average}} {% endcomment %}
+                             {% for k, v in upload_chart_data.items %}
+                                {{ v }},
+                            {% endfor %}
+
+                        ],
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.2)',
+                            'rgba(54, 162, 235, 0.2)',
+
+                        ],
+                        borderColor: [
+                            'rgba(255, 99, 132, 1)',
+                            'rgba(54, 162, 235, 1)',
+
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero: true
+                            }
+                        }]
+                    }
+                }
+            });
+        </script>
+
+    </div>
+</div>
+{% comment %} 그래프 {% endcomment %}
+
+{% comment %} 인증파일 업로드 {% endcomment %}
+<div class="row">
+    <div class="col-12">
+        <h3>인증파일 업로드 리스트</h3>
+    </div>
+    {% if post.author == request.user %}
+    <div class="col-12">
+        <form action="{% url 'studyroom:upload-base' pk=post.id %}" method="POST">
+            {% csrf_token %}
+            {{ upload_form.as_table }}
+            <button type="submit">생성</button>
+        </form>
+    </div>
+    {% endif %}
+    <div class="col-12">
+        <ul style="display:block;">
+            {% for u in uploads %}
+            <li class='mt-2'>
+                <a href="{% url 'studyroom:mission-upload' pk=u.id %}">{{ u.title }}</a>
+            </li>
+            {% empty %}
+            <li>인증파일 업로드 리스트가 없습니다.</li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+{% comment %} 인증파일 업로드 {% endcomment %}
+
+{% comment %} 커뮤니티 {% endcomment %}
+<div class="row">
+    <div class="col-12">
+        <h3>커뮤니티</h3>
+    </div>
+
+</div>
+{% comment %} 커뮤니티 {% endcomment %}
+
+{% endblock %}

@@ -1,0 +1,266 @@
+{% extends 'blog/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block title %}{{ object.title }} - EduOcean{% endblock %}
+{% block content %}
+
+<!-- Title -->
+<h1 class="mt-4" id="find_title">{{ object.title }}</h1>
+
+<!-- Author -->
+<p class="lead">
+    by
+    <a href="#">{{ object.author.username }}</a>
+</p>
+<hr>
+<!--입장하기-->
+{% if request.user != object.author %}
+<!-- Button trigger modal -->
+{% if is_applicate %}
+<button type="button" class="btn btn-sm btn btn-outline-success float-right" href="#" id="read-more-post-{{ i.pk }}">승인 대기중 &raquo;</button>
+{% elif is_participate %}
+<a href="/studyroom/study_room/{{ object.id }}/"><button type="button" class="btn btn-sm btn btn-outline-success float-right" href="/studyroom/study_room/{{ object.id }}/" id="read-more-post-{{ i.pk }}">입장하기 &raquo;</button></a>
+{% else %}
+<button type="button" class="btn btn-sm btn btn-outline-success float-right" data-toggle="modal" data-target="#exampleModal">참여하기 &raquo;</button>
+<!--    <a href="https://forms.gle/suCDAQWLFENNhjFo9" class="btn btn-primary float-right" id="read-more-post-{{ i.pk }}">참여하기 &raquo;</a>-->
+{% endif %}
+{% endif %}
+
+{% if request.user == object.author %}
+<a href="/studyroom/study_room/{{ object.id }}/"><button type="button" class="btn btn-sm btn btn-outline-success float-right" class="btn btn-primary float-right" id="read-more-post-{{ i.pk }}">입장하기 &raquo;</button></a>
+<button type="button" class="btn btn-sm btn btn-outline-success float-right" onclick="location.href='{{ object.get_update_url }}'">EDIT</button>
+<button type="button" class="btn btn-sm btn btn-outline-success float-right" data-toggle="modal" data-target="#deleteModal">DELETE</button>
+{% endif %}
+
+<!-- Date/Time -->
+<p>Posted on {{ object.created }}</p>
+<hr>
+
+<!-- Preview Image -->
+{% if object.head_image %}
+<img class="img-fluid rounded" src="{{ object.head_image.url }}" alt="{{ object.title }}">
+{% endif %}
+
+<!-- Post Content -->
+{{ object.get_markdown_content | safe }}
+
+<br/>
+{% for tag in object.tags.all %}
+<a href="{{ tag.get_absolute_url }}">#{{ tag }}</a>
+{% endfor %}
+<hr>
+
+<!-- Tag -->
+{% if object.category %}
+<span class="badge badge-primary">{{ object.category }}</span>
+{% else %}
+<span class="badge badge-primary float-right">기타</span>
+{% endif %}
+<br>
+
+<!-- Comments Form -->
+<div class="card my-4">
+    <h5 class="card-header">Leave a Comment:</h5>
+    <div class="card-body">
+        <form method="post" action="{{ object.get_absolute_url }}new_comment/">{% csrf_token %}
+            <div class="form-group">
+                {{ comment_form | crispy}}
+            </div>
+            {% if user.is_authenticated %}
+            <button type="submit" class="btn btn-primary">Submit</button>
+            {% else %}
+            <div class="alert alert-dismissible alert-info">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                <strong>환영합니다.</strong><a href="#" class="alert-link"> 댓글을 달기위해서 로그인 해주세요.</a>
+            </div>
+            <!--            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#loginModal">Submit</button>-->
+            {% endif %}
+        </form>
+    </div>
+</div>
+
+<div id="comment-list">
+    {% for comment in object.comment_set.all %}
+    <div class="media mb-4" id="comment-id-{{ comment.pk }}">
+        {% if comment.author.socialaccount_set.all.0.get_avatar_url %}
+        <img width="50px" class="d-flex mr-3 rounded-circle" src="{{ comment.author.socialaccount_set.all.0.get_avatar_url }}" alt="">
+        {% else %}
+        <img width="50px" class="d-flex mr-3 rounded-circle" src="https://api.adorable.io/avatars/285/{{ comment.author }}.png" alt="">
+        {% endif %}
+        <div class="media-body">
+            {% if comment.author == request.user %}
+            <button class="btn btn-sm btn-info float-right" onclick="location.href='/blog/edit_comment/{{ comment.pk }}/'">edit</button>
+            <button class="btn btn-sm btn-warning float-right" data-toggle="modal" data-target="#deleteCommentModal-{{ comment.pk }}">delete</button>
+            {% endif %}
+            <h5 class="mt-0">{{ comment.author }} <small class="text-muted">{{ comment.created_at }}</small></h5>
+            {{ comment.get_markdown_content | safe }}
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+{% for comment in object.comment_set.all %}
+{% if user == comment.author %}
+<!-- DeleteCommentModal -->
+<div class="modal fade" id="deleteCommentModal-{{ comment.pk }}" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">정말로 삭제하시겠습니까?</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>{{ comment.get_markdown_content | safe }}</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" onclick="location.href='/blog/delete_comment/{{ comment.pk }}/'">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endfor %}
+
+<!-- PostDeleteModal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">정말로 삭제하시겠습니까?</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>{{ object.title }}</p>
+            </div>
+            <div class="modal-footer">
+                <a class="btn btn-secondary" href="{% url 'blog:delete_post' pk=post.pk %}">delete</a>
+                <!--                <form method="post" action="{{ get_delete_url }}">{% csrf_token %}-->
+                <!--                    <p>Are you sure you want to delete "{{ object }}"?</p>-->
+                <!--                    <input type="submit" value="Confirm" />-->
+                <!--                </form>-->
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">스터디 신청서 - {{ object.title }}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="./" method='POST'>
+                    {% csrf_token %}
+                    <fieldset>
+                        <legend>모집안내</legend>
+                        <div "form-group row">
+                        <p>
+                            - 내용: 핫뉴스 영어기사 스터디<br>
+                            - 일정: 2020.7.6 - 2020.8.1 (4주)<br>
+                            - 장소: 온라인 (스터디 웹사이트)<br>
+                            - 모집인원: 팀당 20명 (최대 2팀 모집, 입금순 마감)<br>
+                            - 신청비: 회비 2만원 → 할인가 1만원 (7월 사이트 베타테스트 기간 한정)<br>
+                            - 신청기간: 2020.6.22 ~ 선착순 마감<br>
+                            - 입금계좌: 3333-16-2308048 (카카오뱅크, 신은혜)<br>
+                        </p>
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">Name</label>
+                            <input type="text" class="form-control" id="" placeholder="Enter name" name="name" value={{ user.name }}>
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">Email address</label>
+                            <input type="email" class="form-control" id="" aria-describedby="emailHelp" placeholder="Enter email" name="email" value={{ user.email }}>
+                            <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputPassword1">User id</label>
+                            <input type="text" class="form-control" id="" placeholder="Enter user_id" name="user_id" value={{ user.username }}>
+                        </div>
+                        <fieldset class="form-group">
+                            <legend>아래 예제로 스터디 난이도를 확인하셨나요? *</legend>
+                            <div class="form-group">
+                                <img class="img-fluid" width="450" alt="EduOcean_Logo" src="{% static 'basecamp/images/study_example.png' %}"/>
+                            </div>
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                    <input type="radio" class="form-check-input" name="check_level" id="" value="1" required>
+                                    네, 저에게 잘 맞는 난이도입니다
+                                </label>
+                            </div>
+                            <br>
+                            <legend>환불 받을 계좌 (최소 인원 미달으로 취소될 경우 대비)  *</legend>
+                            <input type="text" class="form-control" id="" name="bank_account" required>
+                            <small id="" class="form-text text-muted">예시 : 3333-16-2308048 (카카오뱅크, 신은혜)</small>
+                        </fieldset>
+
+                        <fieldset class="form-group">
+                            <legend>스터디에 참여해보신 적 있으신가요? *</legend>
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                    <input type="radio" class="form-check-input" name="check_status" id="" value=True checked="">
+                                    네, 이전 기수에 참여했어요!
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                    <input type="radio" class="form-check-input" name="check_status" id="" value=False>
+                                    아니요, 처음입니다.
+                                </label>
+                            </div>
+                        </fieldset>
+
+                        <fieldset class="form-group">
+                            <legend>어떤 경로로 스터디를 알게되셨나요? *</legend>
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                    <input type="radio" class="form-check-input" name="check_thr" id="" value="1" checked="">
+                                    블로그
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                    <input type="radio" class="form-check-input" name="check_thr" id="" value="2">
+                                    오픈채팅방
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                    <input type="radio" class="form-check-input" name="check_thr" id="" value="3">
+                                    유튜브
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                    <input type="radio" class="form-check-input" name="check_thr" id="" value="4">
+                                    인터넷 검색
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                    <input type="radio" class="form-check-input" name="check_thr" id="" value="5">
+                                    기타                            </label>
+                            </div>
+                        </fieldset>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+        </form>
+    </div>
+</div>
+</div>
+
+{% endblock %}

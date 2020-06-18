@@ -1,0 +1,38 @@
+{% extends 'blog/base.html/' %} {% block content %} {% load static %}
+<div class="row">
+  <h1 class="my-4" id="blog-list-title">
+    <a href="/"
+      ><img
+        class="img-fluid"
+        width="150"
+        alt="EduOcean_Title"
+        src="{% static 'basecamp/images/title_b.png' %}"
+    /></a>
+    {% if category %}<small class="text-muted">: {{ category }}</small>{% endif
+    %} {% if tag %}<small class="text-muted">: {{ tag }}</small>{% endif %} {%
+    if search_info %}<small class="text-muted"
+      >: {{ search_info }} ({{ object_list.count }})</small
+    >{% endif %}
+  </h1>
+</div>
+
+<div class="row">
+  {% for ts in total %}
+  <div class="col-12">
+    <div class="card m-1" id="post-card-{{ i.pk }}">
+      <div class="card-body" id="main-title">
+        <h5 class="card-title">{{ ts.tryset.cardset.name }}</h5>
+        <h5 class="card-title">전체: {{ ts.total }}</h5>
+        <h5 class="card-title">정답: {{ ts.correct_count }}</h5>
+        <h5 class="card-title">오답: {{ ts.incorrect_count }}</h5>
+        <h5 class="card-title">시작시간: {{ ts.tryset.started_at }}</h5>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+  <a href="/studyroom/study_room/{{ post.id }}/" class="btn btn-primary"
+    >카드셋 리스트</a
+  >
+</div>
+
+{% endblock %}

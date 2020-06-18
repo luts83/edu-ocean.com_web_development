@@ -1,0 +1,104 @@
+{% extends 'blog/base.html' %} {% load static %} {% block title %}{{
+object.title }} - EduOcean{% endblock %} {% block content %}
+<br />
+<h2>새 글 작성하기</h2>
+
+<form method="post" enctype="multipart/form-data">
+  {% csrf_token %}
+  <table>
+    {{ form.as_table }}
+  </table>
+  <button type="submit" class="btn btn-primary float-right">Submit</button>
+</form>
+
+<div>
+  <h6>수업 활성화</h6>
+  {% if is_activated %}
+  <button
+    type="checkbox"
+    id="toggle_activate_button"
+    name="toggle_activate"
+    value="{{is_activated}}"
+    onclick="toggle_activate()"
+  >
+    비활성화 시키기
+  </button>
+  {% else %}
+  <button
+    type="checkbox"
+    id="toggle_activate_button"
+    name="toggle_activate"
+    value="{{is_activated}}"
+    onclick="toggle_activate()"
+  >
+    활성화 시키기
+  </button>
+  {% endif %}
+</div>
+
+<h6>지원자</h6>
+<ul>
+  {% for applicant in applicants %}
+  <li>
+    <button
+      type="checkbox"
+      name="applicant_confirm"
+      value="{{ applicant.id }}"
+      onclick="confirm({{applicant.id}})"
+    >
+      승인
+    </button>
+    <button
+      type="checkbox"
+      name="applicant_cancel"
+      value="{{ applicant.id }}"
+      onclick="cancel()"
+    >
+      취소
+    </button>
+    <div>
+      {{ applicant.username }}
+    </div>
+  </li>
+  {% endfor %}
+</ul>
+
+<h6>참여자</h6>
+<ul>
+  {% for u in object.participants.all %}
+  <li>
+    <input type="checkbox" name="participants_cancel" value="{{ u.id }}" />취소
+    {{ u.username }}
+  </li>
+  {% endfor %}
+</ul>
+
+<script>
+  const confirm = (user_id) => {
+    const post_id = window.location.href.split("/")[4];
+
+    fetch(`/blog/confirm/${post_id}/${user_id}/`)
+      .then((res) => res.json())
+      .then((data) => console.log(data));
+  };
+
+  const cancel = () => {};
+
+  const toggle_activate = () => {
+    const post_id = window.location.href.split("/")[4];
+
+    fetch(`/blog/toggle/${post_id}/`)
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.status) {
+          document.querySelector("#toggle_activate_button").innerHTML =
+            "비활성화 시키기";
+        } else {
+          document.querySelector("#toggle_activate_button").innerHTML =
+            "활성화 시키기";
+        }
+      });
+  };
+</script>
+
+{{ form.media }} {% endblock %}
