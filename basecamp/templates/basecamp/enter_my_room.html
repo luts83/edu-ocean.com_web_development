@@ -1,4 +1,6 @@
-{% extends 'basecamp/base_full.html' %} {% load static %} {% block content %}
+{% extends 'basecamp/base_full.html' %}
+{% load static %}
+{% block content %}
 <!-- Header -->
 <header class="bg-info py-5 mb-5">
   <div class="container h-100">
@@ -128,7 +130,7 @@
     </div>
   </div>
   <!-- /.row -->
-  <p>
+  <p style="text-align: center;">
     You have visited this page {{ num_visits }}{% if num_visits == 1 %} time{%
     else %} times{% endif %}.
   </p>

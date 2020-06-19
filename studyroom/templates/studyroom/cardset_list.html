@@ -33,7 +33,7 @@ title, content, author, created_at
                             {{ n.get_markdown_content | safe }}
                         </div>
                         {% if post.author == request.user %}
-                        <button onclick="delete_notice({{n.pk}})">삭제</button>
+                        <button onclick="delete_notice({{n.pk}})" class="btn btn-warning float-right">삭제</button>
                         {% endif%}
                     </div>
                 </div>
@@ -44,7 +44,7 @@ title, content, author, created_at
 
                 {% if post.author == request.user %}
                 <div class="col-12 mb-4">
-                    <button class="btn btn-primary col-12" data-toggle="collapse" data-target="#write_notice" aria-expanded="false"
+                    <button class="btn btn-info col-12" data-toggle="collapse" data-target="#write_notice" aria-expanded="false"
                             aria-controls="write_notice">
                         공지 작성
                     </button>
@@ -56,7 +56,7 @@ title, content, author, created_at
                         <div class="form-group">
                             {{ notice_form.as_p }}
                         </div>
-                        <button type="submit" class="btn btn-primary">Submit</button>
+                        <button type="submit" class="btn btn-info float-right">Submit</button>
                         </form>
                     </div>
                 </div>
@@ -79,9 +79,9 @@ title, content, author, created_at
             <h2><strong>Youtube</strong></h2>
             <hr>
             {% comment %} 유튜브 강좌 {% endcomment %}
-            <p style="text-align:center;">
+            <p style="text-align:center; position: relative; max-width: 100%; padding-bottom: 56.25%; height: 0;">
                 <iframe id="ytplayer" type="text/html" width="640" height="360" src={{youtube_url.video_url}}
-                        frameborder="0"></iframe>
+                        frameborder="0" allowfullscreen="" style="position: absolute; position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></iframe>
                 <!--                <iframe width="662" height="372" src="https://www.youtube.com/embed/zPYg1HmT-e8" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>-->
             </p>
             {% comment %} 유튜브 강좌 {% endcomment %}
@@ -94,7 +94,7 @@ title, content, author, created_at
             {% endif %}
             <!-- change url end -->
 
-            <a class="btn btn-info btn-lg" href={{youtube_url.channel_url}}>유튜브 사이트 바로가기 &raquo;</a>
+            <a class="btn btn-info btn-lg float-right" href={{youtube_url.channel_url}}>유튜브 사이트 바로가기 &raquo;</a>
         </div>
 
         <!-- /.row -->
@@ -106,8 +106,8 @@ title, content, author, created_at
                 <div class="col-3 mb-2 p-1">
                     <div class="card" id="post-card-{{ i.pk }}">
                         <div class="card-body" id="main-title">
-                            <h5 class="card-title">{{i.name}}</h5>
-                            <a href="/studyroom/try/{{i.id}}/" class="btn btn-primary">입장</a>
+                            <h5 class="card-title" style="text-align: center;">{{i.name}}</h5>
+                            <a href="/studyroom/try/{{i.id}}/" style="text-align: center;" class="col-12 btn btn-info">입장</a>
                         </div>
                     </div>
                 </div>
@@ -117,8 +117,8 @@ title, content, author, created_at
             <!--                {% if object_list.exists %}-->
             <!--                {% for i in object_list %}-->
             <!--                <h5>{{i.name}}</h5>-->
-            <!--                <a href="/try/{{i.id}}/" class="btn btn-primary">입장</a><br><br>-->
-            <!--                <a href="/try/{{ cardset_id }}/total/" class="btn btn-primary">전체 결과 보기</a>-->
+            <!--                <a href="/try/{{i.id}}/" class="btn btn-info">입장</a><br><br>-->
+            <!--                <a href="/try/{{ cardset_id }}/total/" class="btn btn-info">전체 결과 보기</a>-->
             <!--                {% endfor %}-->
             <!--            </div>-->
 
@@ -302,13 +302,13 @@ title, content, author, created_at
                                             {{ comment_form | crispy }}
                                         </div>
                                         {% if user.is_authenticated %}
-                                        <button type="submit" class="btn btn-primary">Submit</button>
+                                        <button type="submit" class="btn btn-info float-right">Submit</button>
                                         {% else %}
                                         <div class="alert alert-dismissible alert-info">
                                             <button type="button" class="close" data-dismiss="alert">&times;</button>
                                             <strong>환영합니다.</strong><a href="#" class="alert-link"> 댓글을 달기위해서 로그인 해주세요.</a>
                                         </div>
-                                        <!--            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#loginModal">Submit</button>-->
+                                        <!--            <button type="button" class="btn btn-info" data-toggle="modal" data-target="#loginModal">Submit</button>-->
                                         {% endif %}
                                     </form>
                                 </div>
@@ -352,7 +352,7 @@ title, content, author, created_at
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                    <button type="button" class="btn btn-primary" onclick="location.href='/studyroom/delete_comment/{{ comment.pk }}/{{ post.pk }}/'">Delete</button>
+                                    <button type="button" class="btn btn-info" onclick="location.href='/studyroom/delete_comment/{{ comment.pk }}/{{ post.pk }}/'">Delete</button>
                                 </div>
                             </div>
                         </div>

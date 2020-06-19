@@ -17,19 +17,19 @@
 {% if request.user != object.author %}
 <!-- Button trigger modal -->
 {% if is_applicate %}
-<button type="button" class="btn btn-sm btn btn-outline-success float-right" href="#" id="read-more-post-{{ i.pk }}">승인 대기중 &raquo;</button>
+<button type="button" class="btn btn-sm btn btn-outline-info float-right" href="#" id="read-more-post-{{ i.pk }}">승인 대기중 &raquo;</button>
 {% elif is_participate %}
-<a href="/studyroom/study_room/{{ object.id }}/"><button type="button" class="btn btn-sm btn btn-outline-success float-right" href="/studyroom/study_room/{{ object.id }}/" id="read-more-post-{{ i.pk }}">입장하기 &raquo;</button></a>
+<a href="/studyroom/study_room/{{ object.id }}/"><button type="button" class="btn btn-sm btn btn-outline-info float-right" href="/studyroom/study_room/{{ object.id }}/" id="read-more-post-{{ i.pk }}">입장하기 &raquo;</button></a>
 {% else %}
-<button type="button" class="btn btn-sm btn btn-outline-success float-right" data-toggle="modal" data-target="#exampleModal">참여하기 &raquo;</button>
-<!--    <a href="https://forms.gle/suCDAQWLFENNhjFo9" class="btn btn-primary float-right" id="read-more-post-{{ i.pk }}">참여하기 &raquo;</a>-->
+<button type="button" class="btn btn-sm btn btn-outline-info float-right" data-toggle="modal" data-target="#exampleModal">참여하기 &raquo;</button>
+<!--    <a href="https://forms.gle/suCDAQWLFENNhjFo9" class="btn btn-info float-right" id="read-more-post-{{ i.pk }}">참여하기 &raquo;</a>-->
 {% endif %}
 {% endif %}
 
 {% if request.user == object.author %}
-<a href="/studyroom/study_room/{{ object.id }}/"><button type="button" class="btn btn-sm btn btn-outline-success float-right" class="btn btn-primary float-right" id="read-more-post-{{ i.pk }}">입장하기 &raquo;</button></a>
-<button type="button" class="btn btn-sm btn btn-outline-success float-right" onclick="location.href='{{ object.get_update_url }}'">EDIT</button>
-<button type="button" class="btn btn-sm btn btn-outline-success float-right" data-toggle="modal" data-target="#deleteModal">DELETE</button>
+<a href="/studyroom/study_room/{{ object.id }}/"><button type="button" class="btn btn-sm btn btn-outline-info float-right" class="btn btn-info float-right" id="read-more-post-{{ i.pk }}">입장하기 &raquo;</button></a>
+<button type="button" class="btn btn-sm btn btn-outline-info float-right" onclick="location.href='{{ object.get_update_url }}'">EDIT</button>
+<button type="button" class="btn btn-sm btn btn-outline-info float-right" data-toggle="modal" data-target="#deleteModal">DELETE</button>
 {% endif %}
 
 <!-- Date/Time -->
@@ -52,101 +52,101 @@
 
 <!-- Tag -->
 {% if object.category %}
-<span class="badge badge-primary">{{ object.category }}</span>
+<span class="badge badge-info">{{ object.category }}</span>
 {% else %}
-<span class="badge badge-primary float-right">기타</span>
+<span class="badge badge-info float-right">기타</span>
 {% endif %}
 <br>
 
-<!-- Comments Form -->
-<div class="card my-4">
-    <h5 class="card-header">Leave a Comment:</h5>
-    <div class="card-body">
-        <form method="post" action="{{ object.get_absolute_url }}new_comment/">{% csrf_token %}
-            <div class="form-group">
-                {{ comment_form | crispy}}
-            </div>
-            {% if user.is_authenticated %}
-            <button type="submit" class="btn btn-primary">Submit</button>
-            {% else %}
-            <div class="alert alert-dismissible alert-info">
-                <button type="button" class="close" data-dismiss="alert">&times;</button>
-                <strong>환영합니다.</strong><a href="#" class="alert-link"> 댓글을 달기위해서 로그인 해주세요.</a>
-            </div>
-            <!--            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#loginModal">Submit</button>-->
-            {% endif %}
-        </form>
-    </div>
-</div>
+<!--&lt;!&ndash; Comments Form &ndash;&gt;-->
+<!--<div class="card my-4">-->
+<!--    <h5 class="card-header">Leave a Comment:</h5>-->
+<!--    <div class="card-body">-->
+<!--        <form method="post" action="{{ object.get_absolute_url }}new_comment/">{% csrf_token %}-->
+<!--            <div class="form-group">-->
+<!--                {{ comment_form | crispy}}-->
+<!--            </div>-->
+<!--            {% if user.is_authenticated %}-->
+<!--            <button type="submit" class="btn btn-info">Submit</button>-->
+<!--            {% else %}-->
+<!--            <div class="alert alert-dismissible alert-info">-->
+<!--                <button type="button" class="close" data-dismiss="alert">&times;</button>-->
+<!--                <strong>환영합니다.</strong><a href="#" class="alert-link"> 댓글을 달기위해서 로그인 해주세요.</a>-->
+<!--            </div>-->
+<!--            &lt;!&ndash;            <button type="button" class="btn btn-info" data-toggle="modal" data-target="#loginModal">Submit</button>&ndash;&gt;-->
+<!--            {% endif %}-->
+<!--        </form>-->
+<!--    </div>-->
+<!--</div>-->
 
-<div id="comment-list">
-    {% for comment in object.comment_set.all %}
-    <div class="media mb-4" id="comment-id-{{ comment.pk }}">
-        {% if comment.author.socialaccount_set.all.0.get_avatar_url %}
-        <img width="50px" class="d-flex mr-3 rounded-circle" src="{{ comment.author.socialaccount_set.all.0.get_avatar_url }}" alt="">
-        {% else %}
-        <img width="50px" class="d-flex mr-3 rounded-circle" src="https://api.adorable.io/avatars/285/{{ comment.author }}.png" alt="">
-        {% endif %}
-        <div class="media-body">
-            {% if comment.author == request.user %}
-            <button class="btn btn-sm btn-info float-right" onclick="location.href='/blog/edit_comment/{{ comment.pk }}/'">edit</button>
-            <button class="btn btn-sm btn-warning float-right" data-toggle="modal" data-target="#deleteCommentModal-{{ comment.pk }}">delete</button>
-            {% endif %}
-            <h5 class="mt-0">{{ comment.author }} <small class="text-muted">{{ comment.created_at }}</small></h5>
-            {{ comment.get_markdown_content | safe }}
-        </div>
-    </div>
-    {% endfor %}
-</div>
+<!--<div id="comment-list">-->
+<!--    {% for comment in object.comment_set.all %}-->
+<!--    <div class="media mb-4" id="comment-id-{{ comment.pk }}">-->
+<!--        {% if comment.author.socialaccount_set.all.0.get_avatar_url %}-->
+<!--        <img width="50px" class="d-flex mr-3 rounded-circle" src="{{ comment.author.socialaccount_set.all.0.get_avatar_url }}" alt="">-->
+<!--        {% else %}-->
+<!--        <img width="50px" class="d-flex mr-3 rounded-circle" src="https://api.adorable.io/avatars/285/{{ comment.author }}.png" alt="">-->
+<!--        {% endif %}-->
+<!--        <div class="media-body">-->
+<!--            {% if comment.author == request.user %}-->
+<!--            <button class="btn btn-sm btn-info float-right" onclick="location.href='/blog/edit_comment/{{ comment.pk }}/'">edit</button>-->
+<!--            <button class="btn btn-sm btn-warning float-right" data-toggle="modal" data-target="#deleteCommentModal-{{ comment.pk }}">delete</button>-->
+<!--            {% endif %}-->
+<!--            <h5 class="mt-0">{{ comment.author }} <small class="text-muted">{{ comment.created_at }}</small></h5>-->
+<!--            {{ comment.get_markdown_content | safe }}-->
+<!--        </div>-->
+<!--    </div>-->
+<!--    {% endfor %}-->
+<!--</div>-->
 
-{% for comment in object.comment_set.all %}
-{% if user == comment.author %}
-<!-- DeleteCommentModal -->
-<div class="modal fade" id="deleteCommentModal-{{ comment.pk }}" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="staticBackdropLabel">정말로 삭제하시겠습니까?</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <p>{{ comment.get_markdown_content | safe }}</p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" onclick="location.href='/blog/delete_comment/{{ comment.pk }}/'">Delete</button>
-            </div>
-        </div>
-    </div>
-</div>
-{% endif %}
-{% endfor %}
+<!--{% for comment in object.comment_set.all %}-->
+<!--{% if user == comment.author %}-->
+<!--&lt;!&ndash; DeleteCommentModal &ndash;&gt;-->
+<!--<div class="modal fade" id="deleteCommentModal-{{ comment.pk }}" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">-->
+<!--    <div class="modal-dialog">-->
+<!--        <div class="modal-content">-->
+<!--            <div class="modal-header">-->
+<!--                <h5 class="modal-title" id="staticBackdropLabel">정말로 삭제하시겠습니까?</h5>-->
+<!--                <button type="button" class="close" data-dismiss="modal" aria-label="Close">-->
+<!--                    <span aria-hidden="true">&times;</span>-->
+<!--                </button>-->
+<!--            </div>-->
+<!--            <div class="modal-body">-->
+<!--                <p>{{ comment.get_markdown_content | safe }}</p>-->
+<!--            </div>-->
+<!--            <div class="modal-footer">-->
+<!--                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>-->
+<!--                <button type="button" class="btn btn-info" onclick="location.href='/blog/delete_comment/{{ comment.pk }}/'">Delete</button>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
+<!--{% endif %}-->
+<!--{% endfor %}-->
 
-<!-- PostDeleteModal -->
-<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="staticBackdropLabel">정말로 삭제하시겠습니까?</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <p>{{ object.title }}</p>
-            </div>
-            <div class="modal-footer">
-                <a class="btn btn-secondary" href="{% url 'blog:delete_post' pk=post.pk %}">delete</a>
-                <!--                <form method="post" action="{{ get_delete_url }}">{% csrf_token %}-->
-                <!--                    <p>Are you sure you want to delete "{{ object }}"?</p>-->
-                <!--                    <input type="submit" value="Confirm" />-->
-                <!--                </form>-->
-            </div>
-        </div>
-    </div>
-</div>
+<!--&lt;!&ndash; PostDeleteModal &ndash;&gt;-->
+<!--<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">-->
+<!--    <div class="modal-dialog">-->
+<!--        <div class="modal-content">-->
+<!--            <div class="modal-header">-->
+<!--                <h5 class="modal-title" id="staticBackdropLabel">정말로 삭제하시겠습니까?</h5>-->
+<!--                <button type="button" class="close" data-dismiss="modal" aria-label="Close">-->
+<!--                    <span aria-hidden="true">&times;</span>-->
+<!--                </button>-->
+<!--            </div>-->
+<!--            <div class="modal-body">-->
+<!--                <p>{{ object.title }}</p>-->
+<!--            </div>-->
+<!--            <div class="modal-footer">-->
+<!--                <a class="btn btn-secondary" href="{% url 'blog:delete_post' pk=post.pk %}">delete</a>-->
+<!--                &lt;!&ndash;                <form method="post" action="{{ get_delete_url }}">{% csrf_token %}&ndash;&gt;-->
+<!--                &lt;!&ndash;                    <p>Are you sure you want to delete "{{ object }}"?</p>&ndash;&gt;-->
+<!--                &lt;!&ndash;                    <input type="submit" value="Confirm" />&ndash;&gt;-->
+<!--                &lt;!&ndash;                </form>&ndash;&gt;-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
 
 
 <!-- Modal -->
@@ -167,11 +167,11 @@
                         <div "form-group row">
                         <p>
                             - 내용: 핫뉴스 영어기사 스터디<br>
-                            - 일정: 2020.7.6 - 2020.8.1 (4주)<br>
+                            - 일정: 시작일로 부터 4주간<br>
                             - 장소: 온라인 (스터디 웹사이트)<br>
                             - 모집인원: 팀당 20명 (최대 2팀 모집, 입금순 마감)<br>
-                            - 신청비: 회비 2만원 → 할인가 1만원 (7월 사이트 베타테스트 기간 한정)<br>
-                            - 신청기간: 2020.6.22 ~ 선착순 마감<br>
+                            - 신청비: 회비 2만원<br>
+                            - 신청기간: 모집공고 참조<br>
                             - 입금계좌: 3333-16-2308048 (카카오뱅크, 신은혜)<br>
                         </p>
                         <div class="form-group">
@@ -256,11 +256,13 @@
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="submit" class="btn btn-info">Submit</button>
         </div>
         </form>
     </div>
 </div>
 </div>
+<br>
 
 {% endblock %}
+

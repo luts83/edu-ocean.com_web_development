@@ -131,8 +131,8 @@ class PostDetail(DetailView):
         post.applicant.add(user)
 
         # send mail
-        title = 'Hi, {}.'.format(user.username)
-        message = 'Hi, {}.\nThis is email Test. \n환불 받을 계좌 주소 : {}'.format(user.username, bank_account)
+        title = '안녕하세요, {}님! EduOcean 스터디에 참여 해 주셔서 감사합니다.'.format(name)
+        message = '안녕하세님요, {}님. EduOcean 스터디에 참여 해 주셔서 감사합니다.\n스터디명 : {}\n기간 : 스터디 시작일로부터 4주\n아래의 계좌로 참가비를 납부하시면 24시간 내에 승인 완료 됩니다. 원활한 운영을 위해 스터디를 신청하신 분의 이름으로 시작 하루전까지 입금 부탁 드립니다.\n입금계좌 : 3333-16-2308048 (카카오뱅크, 신은혜)'.format(name, post)
 
         send_mail(
             title, # 제목

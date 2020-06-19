@@ -1,37 +1,46 @@
-<h1>{{ base.title }}</h1>
-<form method="POST" enctype="multipart/form-data">
-  {% csrf_token %} {{ iform.as_p }}
-  <input type="hidden" value="img" name="type" />
-  <button type="submit">이미지전송</button>
-</form>
+{% extends 'basecamp/base_full.html' %}
+{% load static %}
+{% block content %}
 
-<form method="POST" enctype="multipart/form-data">
-  {% csrf_token %} {{ sform.as_p }}
-  <input type="hidden" value="snd" name="type" />
-  <button type="submit">사운드전송</button>
-</form>
+<br>
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
 
-<ul>
-  {% for i in imgs %}
-  <li>
-    <h5>{{ i.user.username }}</h5>
-    <img src="{{i.ifile.url}}" width="100" />
-    <button onclick="delete_image({{i.pk}})">삭제</button>
-  </li>
-  {% endfor %} {% for s in snds %}
-  <li>
-    <audio controls>
-      <source src="{{s.sfile.url}}" />
-    </audio>
-    <button onclick="delete_sound({{s.pk}})">삭제</button>
-  </li>
-  {% endfor %}
-</ul>
-<a href="{% url 'studyroom:study_room' pk=base.post.id %}">
-  <button class="btn btn-primary">뒤로</button>
-</a>
+      <h1>{{ base.title }}</h1>
+      <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %} {{ iform.as_p }}
+        <input type="hidden" value="img" name="type" />
+        <button type="submit">이미지전송</button>
+      </form>
+      <br>
+      <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %} {{ sform.as_p }}
+        <input type="hidden" value="snd" name="type" />
+        <button type="submit">사운드전송</button>
+      </form>
 
-<script>
+      <ul>
+        {% for i in imgs %}
+        <li>
+          <h5>{{ i.user.username }}</h5>
+          <img src="{{i.ifile.url}}" width="100" />
+          <button onclick="delete_image({{i.pk}})">삭제</button>
+        </li>
+        {% endfor %} {% for s in snds %}
+        <li>
+          <audio controls>
+            <source src="{{s.sfile.url}}" />
+          </audio>
+          <button onclick="delete_sound({{s.pk}})">삭제</button>
+        </li>
+        {% endfor %}
+      </ul>
+      <a href="{% url 'studyroom:study_room' pk=base.post.id %}">
+        <button class="btn btn-info float-right">뒤로</button>
+      </a>
+
+      <script>
   const delete_image = (image_pk) => {
     fetch(`/studyroom/delete_image/${image_pk}/`)
       .then((res) => res.json())
@@ -52,3 +61,13 @@
       });
   };
 </script>
+
+
+
+
+
+    </div>
+  </div>
+</div>
+
+{% endblock %}

@@ -38,6 +38,7 @@ admin.site.register(YoutubeUrl)
 @admin.register(RegForm)
 class RegForm(admin.ModelAdmin):
     list_display = (
+        'post',
         'name',
         'email',
         'user_id',
