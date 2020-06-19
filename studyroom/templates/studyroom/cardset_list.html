@@ -33,7 +33,7 @@ title, content, author, created_at
                             {{ n.get_markdown_content | safe }}
                         </div>
                         {% if post.author == request.user %}
-                        <button onclick="delete_notice({{n.pk}})" class="btn btn-warning float-right">삭제</button>
+                        <button onclick="delete_notice({{n.pk}})" class="btn btn-warning">삭제</button>
                         {% endif%}
                     </div>
                 </div>
@@ -384,7 +384,7 @@ title, content, author, created_at
         const formData = new FormData();
 
         formData.append('url_text', url_text);
-        
+
         fetch(`/studyroom/change-url/${post_id}/`, {
             method: 'POST',
             body: formData
@@ -401,11 +401,10 @@ title, content, author, created_at
         fetch(`/studyroom/delete_notice/${notice_id}/`)
             .then(res => res.json())
             .then(data => {
-                location.href = location.href;
+                location.href = location.href.split("#")[0];
             })
     }
 </script>
 
 {% endblock %}
-
 
