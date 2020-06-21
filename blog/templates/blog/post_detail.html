@@ -124,32 +124,32 @@
 <!--{% endif %}-->
 <!--{% endfor %}-->
 
-<!--&lt;!&ndash; PostDeleteModal &ndash;&gt;-->
-<!--<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">-->
-<!--    <div class="modal-dialog">-->
-<!--        <div class="modal-content">-->
-<!--            <div class="modal-header">-->
-<!--                <h5 class="modal-title" id="staticBackdropLabel">정말로 삭제하시겠습니까?</h5>-->
-<!--                <button type="button" class="close" data-dismiss="modal" aria-label="Close">-->
-<!--                    <span aria-hidden="true">&times;</span>-->
-<!--                </button>-->
-<!--            </div>-->
-<!--            <div class="modal-body">-->
-<!--                <p>{{ object.title }}</p>-->
-<!--            </div>-->
-<!--            <div class="modal-footer">-->
-<!--                <a class="btn btn-secondary" href="{% url 'blog:delete_post' pk=post.pk %}">delete</a>-->
-<!--                &lt;!&ndash;                <form method="post" action="{{ get_delete_url }}">{% csrf_token %}&ndash;&gt;-->
-<!--                &lt;!&ndash;                    <p>Are you sure you want to delete "{{ object }}"?</p>&ndash;&gt;-->
-<!--                &lt;!&ndash;                    <input type="submit" value="Confirm" />&ndash;&gt;-->
-<!--                &lt;!&ndash;                </form>&ndash;&gt;-->
-<!--            </div>-->
-<!--        </div>-->
-<!--    </div>-->
-<!--</div>-->
+<!-- PostDeleteModal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">정말로 삭제하시겠습니까?</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>{{ object.title }}</p>
+            </div>
+            <div class="modal-footer">
+                <a class="btn btn-secondary" href="{% url 'blog:delete_post' pk=post.pk %}">delete</a>
+                <!--                <form method="post" action="{{ get_delete_url }}">{% csrf_token %}-->
+                <!--                    <p>Are you sure you want to delete "{{ object }}"?</p>-->
+                <!--                    <input type="submit" value="Confirm" />-->
+                <!--                </form>-->
+            </div>
+        </div>
+    </div>
+</div>
 
 
-<!-- Modal -->
+<!-- Modal-->
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
