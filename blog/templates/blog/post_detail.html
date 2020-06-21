@@ -166,32 +166,29 @@
                         <legend>모집안내</legend>
                         <div "form-group row">
                         <p>
-                            - 내용: 핫뉴스 영어기사 스터디<br>
-                            - 일정: 시작일로 부터 4주간<br>
-                            - 장소: 온라인 (스터디 웹사이트)<br>
-                            - 모집인원: 팀당 20명 (최대 2팀 모집, 입금순 마감)<br>
-                            - 신청비: 회비 2만원<br>
-                            - 신청기간: 모집공고 참조<br>
+                            - 운항기간: 4주<br>
+                            - 모집인원: 20명<br>
+                            - 승선료: 모집요강 참조<br>
                             - 입금계좌: 3333-16-2308048 (카카오뱅크, 신은혜)<br>
                         </p>
                         <div class="form-group">
-                            <label for="exampleInputEmail1">Name</label>
+                            <label for="exampleInputEmail1">이름</label>
                             <input type="text" class="form-control" id="" placeholder="Enter name" name="name" value={{ user.name }}>
                         </div>
                         <div class="form-group">
-                            <label for="exampleInputEmail1">Email address</label>
-                            <input type="email" class="form-control" id="" aria-describedby="emailHelp" placeholder="Enter email" name="email" value={{ user.email }}>
+                            <label for="exampleInputEmail1">이메일 주소</label>
+                            <input type="email" class="form-control" id="" aria-describedby="emailHelp" placeholder="Enter email address" name="email" value={{ user.email }}>
                             <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
                         </div>
                         <div class="form-group">
-                            <label for="exampleInputPassword1">User id</label>
+                            <label for="exampleInputPassword1">아이디</label>
                             <input type="text" class="form-control" id="" placeholder="Enter user_id" name="user_id" value={{ user.username }}>
                         </div>
                         <fieldset class="form-group">
-                            <legend>아래 예제로 스터디 난이도를 확인하셨나요? *</legend>
-                            <div class="form-group">
-                                <img class="img-fluid" width="450" alt="EduOcean_Logo" src="{% static 'basecamp/images/study_example.png' %}"/>
-                            </div>
+                            <legend>모집요강에서 예문 난이도를 확인하셨나요? *</legend>
+<!--                            <div class="form-group">-->
+<!--                                <img class="img-fluid" width="450" alt="EduOcean_Logo" src="{% static 'basecamp/images/study_example.png' %}"/>-->
+<!--                            </div>-->
                             <div class="form-check">
                                 <label class="form-check-label">
                                     <input type="radio" class="form-check-input" name="check_level" id="" value="1" required>
@@ -199,13 +196,13 @@
                                 </label>
                             </div>
                             <br>
-                            <legend>환불 받을 계좌 (최소 인원 미달으로 취소될 경우 대비)  *</legend>
-                            <input type="text" class="form-control" id="" name="bank_account" required>
-                            <small id="" class="form-text text-muted">예시 : 3333-16-2308048 (카카오뱅크, 신은혜)</small>
+                            <legend>환불 받을 계좌 *</legend>
+                            <input type="text" class="form-control" placeholder="예: 3333-16-2308048 (카카오뱅크, 신은혜)" id="" name="bank_account" required>
+                            <small id="" class="form-text text-muted">인원 미달으로 취소 시 환불을 위해 필요</small>
                         </fieldset>
 
                         <fieldset class="form-group">
-                            <legend>스터디에 참여해보신 적 있으신가요? *</legend>
+                            <legend>해당 스터디에 참여해보신 적 있으신가요? *</legend>
                             <div class="form-check">
                                 <label class="form-check-label">
                                     <input type="radio" class="form-check-input" name="check_status" id="" value=True checked="">

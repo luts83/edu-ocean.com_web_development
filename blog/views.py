@@ -30,7 +30,7 @@ from studyroom.models import *
 
 class PostList(ListView):
     model = Post
-    paginate_by = 3
+    paginate_by = 4
 
     def get_queryset(self):
         return Post.objects.filter(is_activated=True)
@@ -131,8 +131,12 @@ class PostDetail(DetailView):
         post.applicant.add(user)
 
         # send mail
-        title = '안녕하세요, {}님! EduOcean 스터디에 참여 해 주셔서 감사합니다.'.format(name)
-        message = '안녕하세님요, {}님. EduOcean 스터디에 참여 해 주셔서 감사합니다.\n스터디명 : {}\n기간 : 스터디 시작일로부터 4주\n아래의 계좌로 참가비를 납부하시면 24시간 내에 승인 완료 됩니다. 원활한 운영을 위해 스터디를 신청하신 분의 이름으로 시작 하루전까지 입금 부탁 드립니다.\n입금계좌 : 3333-16-2308048 (카카오뱅크, 신은혜)'.format(name, post)
+        title = '[에듀오션] 스터디 참여 안내'
+        message = '안녕하세님요, {}님!\n\n에듀오션 스터디에 참여 신청해 주셔서 감사합니다.\n\n- 스터디명 : {}\n- 기간 : 스터디 시작일로부터 4주 \n- 입금계좌 : 3333-16-2308048 (카카오뱅크, 신은혜) \n\n신청서에 적어주신 입금자명으로 승선료를 입금해주시면, 24시간 내에 승인이 완료됩니다. \n\n본 스터디는 정원이 정해져있어, 입금순으로 선착순 마감 되는 점 참고 부탁드립니다. \n\n감사합니다.\n에듀오션 드림'.format(name, post)
+
+        # title = '안녕하세요, {}님! EduOcean 스터디에 참여 해 주셔서 감사합니다.'.format(name)
+        # message = '안녕하세님요, {}님. EduOcean 스터디에 참여 해 주셔서 감사합니다.\n스터디명 : {}\n기간 : 스터디 시작일로부터 4주\n아래의 계좌로 참가비를 납부하시면 24시간 내에 승인 완료 됩니다. 원활한 운영을 위해 스터디를 신청하신 분의 이름으로 시작 하루전까지 입금 부탁 드립니다.\n입금계좌 : 3333-16-2308048 (카카오뱅크, 신은혜)'.format(name, post)
+
 
         send_mail(
             title, # 제목

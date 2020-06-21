@@ -5,7 +5,7 @@
     {% if user.is_staff %}
     <button class="btn btn-info btn-sm float-right" onclick="location.href='/blog/create/'">New Post</button>
     {% endif %}
-    <a href="/"><img class="img-fluid" width="150" alt="EduOcean_Title" src="{% static 'basecamp/images/title_b.png' %}"/></a>
+<!--    <a href="/"><img class="img-fluid" width="150" alt="EduOcean_Title" src="{% static 'basecamp/images/title_b.png' %}"/></a>-->
     {% if category %}<small class="text-muted">: {{ category }}</small>{% endif %}
     {% if tag %}<small class="text-muted">: {{ tag }}</small>{% endif %}
     {% if search_info %}<small class="text-muted">: {{ search_info }} ({{ object_list.count }})</small>{% endif %}
@@ -37,10 +37,10 @@
 
         {% if i.is_activated %}
         <h2 class="card-title">{{ i.title }}<strong style="color:red;"> : 진행중</strong></h2>
-        <p class="card-text">{{ i.get_markdown_content | striptags | truncatewords_html:50 }}</p>
+        <p class="card-text">{{ i.get_markdown_content | striptags | truncatewords_html:30 }}</p>
         {% else  %}
         <h2 class="card-title">{{ i.title }}<strong style="color:red;"> : Completed</strong></h2>
-        <p class="card-text">{{ i.get_markdown_content | striptags | truncatewords_html:50 }}</p>
+        <p class="card-text">{{ i.get_markdown_content | striptags | truncatewords_html:30 }}</p>
         {% endif %}
 
 
@@ -72,21 +72,21 @@
 <ul class="pagination justify-content-center mb-4">
     {% if page_obj.has_next %}
     <li class="page-item">
-        <a class="page-link" href="?page={{ page_obj.next_page_number }}">&larr; Older</a>
+        <a class="page-link" href="?page={{ page_obj.next_page_number }}">&larr; 이전</a>
     </li>
     {% else %}
     <li class="page-item disabled">
-        <a class="page-link" href="#">&larr; Older</a>
+        <a class="page-link" href="#">&larr; 이전</a>
     </li>
     {% endif %}
 
     {% if page_obj.has_previous %}
     <li class="page-item">
-        <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Newer &rarr;</a>
+        <a class="page-link" href="?page={{ page_obj.previous_page_number }}">다음 &rarr;</a>
     </li>
     {% else %}
     <li class="page-item disabled">
-        <a class="page-link" href="#">Newer &rarr;</a>
+        <a class="page-link" href="#">다음 &rarr;</a>
     </li>
     {% endif %}
 </ul>
