@@ -5,7 +5,7 @@
     {% if user.is_staff %}
     <button class="btn btn-info btn-sm float-right" onclick="location.href='/blog/create/'">New Post</button>
     {% endif %}
-<!--    <a href="/"><img class="img-fluid" width="150" alt="EduOcean_Title" src="{% static 'basecamp/images/title_b.png' %}"/></a>-->
+    <a href="/"><img class="img-fluid" width="150" alt="EduOcean_Title" src="{% static 'basecamp/images/title_b.png' %}"/></a>
     {% if category %}<small class="text-muted">: {{ category }}</small>{% endif %}
     {% if tag %}<small class="text-muted">: {{ tag }}</small>{% endif %}
     {% if search_info %}<small class="text-muted">: {{ search_info }} ({{ object_list.count }})</small>{% endif %}

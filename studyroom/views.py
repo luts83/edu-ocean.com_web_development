@@ -180,7 +180,7 @@ def get_card(tryset, cardset):
 
 
 def get_random_card(card_id, samples=1):
-    return Card.objects.exclude(id=card_id).order_by('?')[:samples]
+    return list(Card.objects.exclude(id=card_id).order_by('?'))[:samples]
 
 
 def try_view(request, pk):
@@ -243,7 +243,7 @@ def try_view(request, pk):
             return HttpResponseRedirect(f'/studyroom/try/{tryset.id}/result/')
 
     incorrects = get_random_card(target_card.id, 3)
-    incorrects |= Card.objects.filter(pk=target_card.pk)
+    incorrects += list(Card.objects.filter(pk=target_card.pk))
     incorrects = sorted(incorrects, key = lambda x: random.random())
 
     return render(request, 'studyroom/cardset_try.html', {
