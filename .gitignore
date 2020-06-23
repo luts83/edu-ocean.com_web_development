@@ -6,8 +6,8 @@ migrations/
 img/
 my_site_prj/settings_production.py
 bin/
-lib/
 pyvenv.cfg
 .vscode
 conf/secrets.json
-!/lib/python3.7/site-packages/allauth
+lib/*
+!lib/python3.7/site-packages/allauth/
