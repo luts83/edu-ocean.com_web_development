@@ -1,41 +1,42 @@
 {% extends 'basecamp/base_full.html' %}
 {% block content %}
 {% load static %}
-<div class="row">
-  <h1 class="my-4" id="blog-list-title">
-    <a href="/"
-      ><img
-        class="img-fluid"
-        width="150"
-        alt="EduOcean_Title"
-        src="{% static 'basecamp/images/title_b.png' %}"
-    /></a>
-    {% if category %}<small class="text-muted">: {{ category }}</small>{% endif
-    %} {% if tag %}<small class="text-muted">: {{ tag }}</small>{% endif %} {%
-    if search_info %}<small class="text-muted"
-      >: {{ search_info }} ({{ object_list.count }})</small
-    >{% endif %}
+<br>
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 mb-5">
+      <h2><strong>Vocabulary</strong></h2>
+      <hr>
+    </div>
+  </div>
+  {% if category %}<small class="text-muted">: {{ category }}</small>{% endif
+  %} {% if tag %}<small class="text-muted">: {{ tag }}</small>{% endif %} {%
+  if search_info %}<small class="text-muted"
+>: {{ search_info }} ({{ object_list.count }})</small
+>{% endif %}
   </h1>
-</div>
 
-<div class="row">
-  <div class="col-12">
-    <div class="card m-1" id="post-card-{{ i.pk }}">
-      <div class="card-body" id="main-title">
-        <h5 class="card-title">{{ tryset.cardset.name }}</h5>
-        <h5 class="card-title">전체: {{ total }}</h5>
-        <h5 class="card-title">정답: {{ correct_count }}</h5>
-        <h5 class="card-title">오답: {{ incorrect_count }}</h5>
-        <h5 class="card-title">시작시간: {{ tryset.started_at }}</h5>
-        <h5 class="card-title">종료시간: {{ tryset.last_updated_at }}</h5>
-        <a
-          href="/studyroom/study_room/{{ tryset.cardset.post.id }}/"
-          class="btn btn-primary"
+
+  <div class="row">
+    <div class="col-12">
+      <div class="card m-1" id="post-card-{{ i.pk }}">
+        <div class="card-body" id="main-title">
+          <h5 class="card-title">{{ tryset.cardset.name }}</h5>
+          <h5 class="card-title">전체: {{ total }}</h5>
+          <h5 class="card-title">정답: {{ correct_count }}</h5>
+          <h5 class="card-title">오답: {{ incorrect_count }}</h5>
+          <h5 class="card-title">시작시간: {{ tryset.started_at }}</h5>
+          <h5 class="card-title">종료시간: {{ tryset.last_updated_at }}</h5>
+          <a
+                  href="/studyroom/study_room/{{ tryset.cardset.post.id }}/"
+                  class="btn btn-info"
           >카드셋 리스트</a
-        >
+          >
+        </div>
       </div>
     </div>
   </div>
 </div>
+<br>
 
 {% endblock %}

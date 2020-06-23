@@ -3667,13 +3667,13 @@ input[type="button"].btn-block {
 .dropdown-item:hover, .dropdown-item:focus {
   color: #fff;
   text-decoration: none;
-  background-color: #D9230F;
+  background-color: #039bcf;
 }
 
 .dropdown-item.active, .dropdown-item:active {
   color: #fff;
   text-decoration: none;
-  background-color: #D9230F;
+  background-color: #039bcf;
 }
 
 .dropdown-item.disabled, .dropdown-item:disabled {

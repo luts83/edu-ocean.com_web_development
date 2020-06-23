@@ -19,7 +19,8 @@
                         {% csrf_token %}
                         <input type="hidden" value="{{card.id}}" name="cid" />
                         <input type="hidden" value="{{c.back}}" name="cresult" />
-                        <button type="submit" class="btn btn-primary">{{c.back}}</button>
+                        <br>
+                        <button type="submit" class="btn btn-info">{{c.back}}</button>
                     </form>
                     {% endfor %}
                 </div>
@@ -27,4 +28,5 @@
         </div>
     </div>
 </div>
+<br>
 {% endblock %}
