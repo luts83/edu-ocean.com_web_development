@@ -9,5 +9,5 @@ bin/
 pyvenv.cfg
 .vscode
 conf/secrets.json
-
+lib/
 !lib/python3.7/site-packages/allauth/
