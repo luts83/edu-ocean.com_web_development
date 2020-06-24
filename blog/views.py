@@ -43,13 +43,15 @@ class PostList(ListView):
 
         return context
 
+
 class MyPostList(ListView):
     model = Post
     paginate_by = 3
 
     def get_queryset(self):
         user = self.request.user
-        queryset = Post.objects.filter(Q(author=user)) | user.participate_posts.all()
+        queryset = Post.objects.filter(
+            Q(author=user)) | user.participate_posts.all()
         queryset = queryset.distinct()
         return queryset
 
@@ -118,29 +120,29 @@ class PostDetail(DetailView):
         post = self.get_object()
 
         new_reg = RegForm.objects.create(
-            post = post,
-            name = name,
-            email = email,
-            user_id = user_id,
-            check_level = check_level,
-            check_status = check_status,
-            check_thr = check_thr,
-            bank_account = bank_account,
+            post=post,
+            name=name,
+            email=email,
+            user_id=user_id,
+            check_level=check_level,
+            check_status=check_status,
+            check_thr=check_thr,
+            bank_account=bank_account,
         )
 
         post.applicant.add(user)
 
         # send mail
         title = '[에듀오션] 스터디 참여 안내'
-        message = '안녕하세님요, {}님!\n\n에듀오션 스터디에 참여 신청해 주셔서 감사합니다.\n\n- 스터디명 : {}\n- 기간 : 스터디 시작일로부터 4주 \n- 입금계좌 : 3333-16-2308048 (카카오뱅크, 신은혜) \n\n신청서에 적어주신 입금자명으로 승선료를 입금해주시면, 24시간 내에 승인이 완료됩니다. \n\n본 스터디는 정원이 정해져있어, 입금순으로 선착순 마감 되는 점 참고 부탁드립니다. \n\n감사합니다.\n에듀오션 드림'.format(name, post)
+        message = '안녕하세님요, {}님!\n\n에듀오션 스터디에 참여 신청해 주셔서 감사합니다.\n\n- 스터디명 : {}\n- 기간 : 스터디 시작일로부터 4주 \n- 입금계좌 : 3333-16-2308048 (카카오뱅크, 신은혜) \n\n신청서에 적어주신 입금자명으로 승선료를 입금해주시면, 24시간 내에 승인이 완료됩니다. \n\n본 스터디는 정원이 정해져있어, 입금순으로 선착순 마감 되는 점 참고 부탁드립니다. \n\n감사합니다.\n에듀오션 드림'.format(
+            name, post)
 
         # title = '안녕하세요, {}님! EduOcean 스터디에 참여 해 주셔서 감사합니다.'.format(name)
         # message = '안녕하세님요, {}님. EduOcean 스터디에 참여 해 주셔서 감사합니다.\n스터디명 : {}\n기간 : 스터디 시작일로부터 4주\n아래의 계좌로 참가비를 납부하시면 24시간 내에 승인 완료 됩니다. 원활한 운영을 위해 스터디를 신청하신 분의 이름으로 시작 하루전까지 입금 부탁 드립니다.\n입금계좌 : 3333-16-2308048 (카카오뱅크, 신은혜)'.format(name, post)
 
-
         send_mail(
-            title, # 제목
-            message, # 내용
+            title,  # 제목
+            message,  # 내용
             'no-reply@example.com',     # 보내는 이메일  (settings에 설정해서 작성안해도 됨)
             [post.author.email, email],     # 받는 이메일 리스트
             fail_silently=False,
@@ -295,23 +297,54 @@ def delete_post(request, pk):
 
 
 def confirm_applicant(request, post_pk, user_pk):
-
     post = Post.objects.get(pk=post_pk)
     user = User.objects.get(pk=user_pk)
 
     post.applicant.remove(user)
     post.participants.add(user)
 
-    response = {
-        "result": "confirm"
-    }
-
     new_comment_room = CommentRoom.objects.create(
         post=post,
         participant=user
     )
 
+    response = {
+        "result": "confirm"
+    }
+
     return JsonResponse(response)
+
+
+def cancel_applicant(request, post_pk, user_pk):
+
+    post = Post.objects.get(pk=post_pk)
+    user = User.objects.get(pk=user_pk)
+
+    post.applicant.remove(user)
+
+    response = {
+        "result": "cancel"
+    }
+
+    return JsonResponse(response)
+
+
+def cancel_participant(request, post_pk, user_pk):
+
+    post = Post.objects.get(pk=post_pk)
+    user = User.objects.get(pk=user_pk)
+
+    post.participants.remove(user)
+
+    comment_room = CommentRoom.objects.get(post=post, participant=user)
+    comment_room.delete()
+
+    response = {
+        "result": "cancel"
+    }
+
+    return JsonResponse(response)
+
 
 def toggle_activate(request, pk):
     post = Post.objects.get(pk=pk)
@@ -320,8 +353,8 @@ def toggle_activate(request, pk):
     post.save()
 
     return JsonResponse({
-        "result" : "toggle activate",
-        "status" : post.is_activated
+        "result": "toggle activate",
+        "status": post.is_activated
     })
 
 

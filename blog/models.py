@@ -30,6 +30,7 @@ class Tag(models.Model):
     def get_absolute_url(self):
         return '/blog/tag/{}/'.format(self.slug)
 
+
 class Post(models.Model):
     content = MarkdownxField()
     title = models.CharField(max_length=100)
@@ -66,10 +67,20 @@ class Post(models.Model):
     def get_delete_url(self):
         return '/delete_post/{self.pk}/'
 
+
 class YoutubeUrl(models.Model):
     video_url = models.URLField(default='')
     channel_url = models.URLField(default='')
-    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name="youtube_url",null=True, blank=True)
+    post = models.ForeignKey(Post, on_delete=models.CASCADE,
+                             related_name="youtube_url", null=True, blank=True)
+
+
+class SoundUrl(models.Model):
+    title = models.CharField(
+        max_length=255, default='default week', blank=True)
+    sound_file = models.FileField(null=True, upload_to="%Y%m%d")
+    post = models.ForeignKey(Post, on_delete=models.CASCADE,
+                             related_name="sound_files", null=True, blank=True)
 
 
 class Comment(models.Model):
@@ -95,7 +106,8 @@ class RegForm(models.Model):
         ("5", "기타"),
     )
 
-    post = models.ForeignKey(Post, on_delete=models.CASCADE, blank=True, null=True)
+    post = models.ForeignKey(
+        Post, on_delete=models.CASCADE, blank=True, null=True)
     name = models.CharField(
         max_length=10)
     email = models.EmailField(max_length=30)

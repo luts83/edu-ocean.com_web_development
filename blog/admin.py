@@ -32,7 +32,7 @@ admin.site.register(Category, CategoryAdmin)
 admin.site.register(Tag, TagAdmin)
 admin.site.register(Comment)
 admin.site.register(YoutubeUrl)
-
+admin.site.register(SoundUrl)
 
 
 @admin.register(RegForm)

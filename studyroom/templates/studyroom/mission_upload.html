@@ -1,21 +1,20 @@
-{% extends 'basecamp/base_full.html' %}
-{% load static %}
-{% block content %}
+{% extends 'basecamp/base_full.html' %} {% load static %} {% block content %}
 
-<br>
+<br />
 <div class="container">
   <div class="row">
     <div class="col-md-12">
-
       <h1>{{ base.title }}</h1>
       <form method="POST" enctype="multipart/form-data">
-        {% csrf_token %} {{ iform.as_p }}
+        {% csrf_token %} {{ iform }}
+        <br />
         <input type="hidden" value="img" name="type" />
         <button type="submit">이미지전송</button>
       </form>
-      <br>
+      <br />
       <form method="POST" enctype="multipart/form-data">
-        {% csrf_token %} {{ sform.as_p }}
+        {% csrf_token %} {{ sform }}
+        <br />
         <input type="hidden" value="snd" name="type" />
         <button type="submit">사운드전송</button>
       </form>
@@ -24,7 +23,13 @@
         {% for i in imgs %}
         <li>
           <h5>{{ i.user.username }}</h5>
-          <img src="{{i.ifile.url}}" width="100" />
+          <img
+            src="{{i.ifile.url}}"
+            width="400"
+            id="ifile_{{i.pk}}"
+            data-toggle="false"
+            onclick="resize_ifile({{i.pk}})"
+          />
           <button onclick="delete_image({{i.pk}})">삭제</button>
         </li>
         {% endfor %} {% for s in snds %}
@@ -41,33 +46,39 @@
       </a>
 
       <script>
-  const delete_image = (image_pk) => {
-    fetch(`/studyroom/delete_image/${image_pk}/`)
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.result == "image delete") {
-          location.href = location.href;
-        }
-      });
-  };
+        const delete_image = (image_pk) => {
+          fetch(`/studyroom/delete_image/${image_pk}/`)
+            .then((res) => res.json())
+            .then((data) => {
+              if (data.result == "image delete") {
+                location.href = location.href;
+              }
+            });
+        };
 
-  const delete_sound = (sound_pk) => {
-    fetch(`/studyroom/delete_sound/${sound_pk}/`)
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.result == "sound delete") {
-          location.href = location.href;
-        }
-      });
-  };
-</script>
+        const delete_sound = (sound_pk) => {
+          fetch(`/studyroom/delete_sound/${sound_pk}/`)
+            .then((res) => res.json())
+            .then((data) => {
+              if (data.result == "sound delete") {
+                location.href = location.href;
+              }
+            });
+        };
 
-
-
-
-
+        const resize_ifile = (ifile_pk) => {
+          const ifile = document.getElementById(`ifile_${ifile_pk}`);
+          if (ifile.dataset.toggle == "false") {
+            ifile.style.width = "600px";
+            ifile.dataset.toggle = "true";
+          } else {
+            ifile.style.width = "400px";
+            ifile.dataset.toggle = "false";
+          }
+        };
+      </script>
     </div>
   </div>
 </div>
-<br>
+<br />
 {% endblock %}

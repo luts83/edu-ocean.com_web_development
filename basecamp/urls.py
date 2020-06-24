@@ -19,7 +19,5 @@ from . import views
 app_name = 'basecamp'
 
 urlpatterns = [
-    path('', views.index),
-    path('enter_my_room/', views.enter_my_room, name='index'),
-    # path('', views.PostList.as_view()),
+    path('', views.enter_my_room, name='index'),
 ]

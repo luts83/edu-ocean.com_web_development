@@ -95,12 +95,48 @@ title, content, author, created_at
             <!-- change url end -->
 
             <a class="btn btn-info btn-lg" href={{youtube_url.channel_url}}>유튜브 채널 바로가기 &raquo;</a>
+            <br>
+            <br>
+        </div>
+
+        <div class="col-md-12 mb-5">
+            <h2><strong>Sound</strong></h2>
+            <hr>
+            {% if post.author == request.user %}
+                <form action="/studyroom/register_sound/{{post.id}}/" method='POST' enctype="multipart/form-data">
+                    {% csrf_token %}
+                    주차 : <input type="text" name="sound_file_title">
+                    <br>
+                    <input type="file" name="sound_file">
+                    <br>
+                    <button type="submit">생성</button>
+                </form>
+            {% endif %}
+            {% for sound_file in sound_files %}
+                <br>
+                {{sound_file.title}}
+                <br>
+                <audio controls="controls">
+                    <source src="{{sound_file.sound_file.url}}">
+                </audio>
+                &nbsp;<button onclick="delete_week_sound({{sound_file.id}})">삭제</button>
+            {% endfor %}
         </div>
 
         <!-- /.row -->
         <div class="col-md-12 mb-5">
             <h2><strong>Voca Test</strong></h2>
             <hr>
+            {% if post.author == request.user %}
+            <form action="/studyroom/create_vocatest/{{post.id}}/" method='POST'>
+                {% csrf_token %}
+                Name : <input type="text" name="vocatest_name">
+                <br>
+                Limit : <input type="text" name="vocatest_limit">
+                <br>
+                <button type="submit">생성</button>
+            </form>
+            {% endif %}
             <div class="row">
                 {% for i in object_list %}
                 <div class="col-3 mb-2 p-1">
@@ -109,6 +145,13 @@ title, content, author, created_at
                             <h5 class="card-title" style="text-align: center;">{{i.name}}</h5>
                             <a href="/studyroom/try/{{i.id}}/" style="text-align: center;" class="col-12 btn btn-info">입장</a>
                         </div>
+                        {% if post.author == request.user %}
+                        <form action="/studyroom/register_csv/{{post.id}}/{{i.id}}/" method='POST' enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <input type="file" name="cardset_csv">
+                            <button type="submit">등록</button>
+                        </form>
+                        {% endif %}
                     </div>
                 </div>
                 {% endfor %}
@@ -170,7 +213,7 @@ title, content, author, created_at
             data: {
                 labels: ['My score', 'Average score'],
                 datasets: [{
-
+                    label: ['My score', 'Average score'],
                     data: [{{my_average}},{{average}}],
                     backgroundColor: [
                         'rgba(255, 99, 132, 0.2)',
@@ -180,7 +223,6 @@ title, content, author, created_at
                     borderColor: [
                         'rgba(255, 99, 132, 1)',
                         'rgba(54, 162, 235, 1)',
-
                     ],
                     borderWidth: 1
                 }]
@@ -193,6 +235,16 @@ title, content, author, created_at
                             max: 100
                         }
                     }]
+                },
+                legend: {
+                    display: false
+                },
+                tooltips: {
+                    callbacks: {
+                    label: function(tooltipItem) {
+                            return tooltipItem.yLabel;
+                        }
+                    }
                 }
             }
         });
@@ -241,6 +293,16 @@ title, content, author, created_at
                             max: 100
                         }
                     }]
+                },
+                legend: {
+                    display: false
+                },
+                tooltips: {
+                    callbacks: {
+                    label: function(tooltipItem) {
+                            return tooltipItem.yLabel;
+                        }
+                    }
                 }
             }
         });
@@ -386,13 +448,21 @@ title, content, author, created_at
             .then((res) => res.json())
             .then((data) => {
                 if(data.result = 'change'){
-                    location.href = location.href;
+                    location.href = location.href.split("#")[0];
                 }
             });
     }
 
     const delete_notice = (notice_id) => {
         fetch(`/studyroom/delete_notice/${notice_id}/`)
+            .then(res => res.json())
+            .then(data => {
+                location.href = location.href.split("#")[0];
+            })
+    }
+
+    const delete_week_sound = (sound_id) => {
+        fetch(`/studyroom/delete_week_sound/${sound_id}/`)
             .then(res => res.json())
             .then(data => {
                 location.href = location.href.split("#")[0];

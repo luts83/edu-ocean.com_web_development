@@ -1,13 +1,11 @@
-{% extends 'basecamp/base_full.html' %}
-{% load static %}
-{% block title %}
+{% extends 'basecamp/base_full.html' %} {% load static %} {% block title %}
 {{object.title }} - EduOcean{% endblock %} {% block content %}
-<br>
+<br />
 <div class="container">
   <div class="row">
     <div class="col-md-12">
       <h2>New Post</h2>
-      <hr>
+      <hr />
 
       <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
@@ -21,52 +19,54 @@
       <!--        <input type="checkbox" class="custom-control-input" id="customSwitch1" checked="">-->
       <!--        <label class="custom-control-label" for="customSwitch1">Toggle this switch element</label>-->
       <!--      </div>-->
-      <br><br>
-      <hr>
-      <br>
+      <br /><br />
+      <hr />
+      <br />
       <div>
         <h6>수업 활성화</h6>
         {% if is_activated %}
         <button
-                type="checkbox"
-                id="toggle_activate_button"
-                name="toggle_activate"
-                value="{{is_activated}}"
-                onclick="toggle_activate()"
+          type="checkbox"
+          id="toggle_activate_button"
+          name="toggle_activate"
+          value="{{is_activated}}"
+          onclick="toggle_activate()"
         >
           비활성화 시키기
         </button>
         {% else %}
         <button
-                type="checkbox"
-                id="toggle_activate_button"
-                name="toggle_activate"
-                value="{{is_activated}}"
-                onclick="toggle_activate()"
+          type="checkbox"
+          id="toggle_activate_button"
+          name="toggle_activate"
+          value="{{is_activated}}"
+          onclick="toggle_activate()"
         >
           활성화 시키기
         </button>
         {% endif %}
       </div>
-      <hr>
+      <hr />
 
       <h6>지원자</h6>
       <ul>
         {% for applicant in applicants %}
         <li>
           <button
-                  type="checkbox"
-                  name="applicant_confirm"
-                  value="{{ applicant.id }}"
-                  onclick="confirm({{applicant.id}})"
+            type="checkbox"
+            id="confirm_button_{{applicant.id}}"
+            name="applicant_confirm"
+            value="{{ applicant.id }}"
+            onclick="applicant_confirm({{applicant.id}})"
           >
             승인
           </button>
           <button
-                  type="checkbox"
-                  name="applicant_cancel"
-                  value="{{ applicant.id }}"
-                  onclick="cancel()"
+            type="checkbox"
+            id="cancel_button_{{applicant.id}}"
+            name="applicant_cancel"
+            value="{{ applicant.id }}"
+            onclick="applicant_cancel({{applicant.id}})"
           >
             취소
           </button>
@@ -76,32 +76,67 @@
         </li>
         {% endfor %}
       </ul>
-      <hr>
+      <hr />
 
       <h6>참여자</h6>
       <ul>
         {% for u in object.participants.all %}
         <li>
-          <input type="checkbox" name="participants_cancel" value="{{ u.id }}" />취소
           {{ u.username }}
+          <button
+            type="button"
+            id="participant_cancel_button_{{u.id}}"
+            name="participant_cancel"
+            value="{{ u.id }}"
+            onclick="participant_cancel({{u.id}})"
+          >
+            취소
+          </button>
         </li>
         {% endfor %}
       </ul>
-
     </div>
   </div>
 </div>
 
 <script>
-  const confirm = (user_id) => {
+  const applicant_confirm = (user_id) => {
     const post_id = window.location.href.split("/")[4];
 
-    fetch(`/blog/confirm/${post_id}/${user_id}/`)
+    fetch(`/blog/applicant/confirm/${post_id}/${user_id}/`)
       .then((res) => res.json())
-      .then((data) => console.log(data));
+      .then((data) => {
+        if (data.result == "confirm") {
+          document.getElementById(`confirm_button_${user_id}`).disabled = true;
+        }
+      });
   };
 
-  const cancel = () => {};
+  const applicant_cancel = (user_id) => {
+    const post_id = window.location.href.split("/")[4];
+
+    fetch(`/blog/applicant/cancel/${post_id}/${user_id}/`)
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.result == "cancel") {
+          document.getElementById(`cancel_button_${user_id}`).disabled = true;
+        }
+      });
+  };
+
+  const participant_cancel = (user_id) => {
+    const post_id = window.location.href.split("/")[4];
+
+    fetch(`/blog/participant/cancel/${post_id}/${user_id}/`)
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.result == "cancel") {
+          document.getElementById(
+            `participant_cancel_button_${user_id}`
+          ).disabled = true;
+        }
+      });
+  };
 
   const toggle_activate = () => {
     const post_id = window.location.href.split("/")[4];
@@ -120,5 +155,4 @@
   };
 </script>
 
-{{ form.media }}
-{% endblock %}
+{{ form.media }} {% endblock %}

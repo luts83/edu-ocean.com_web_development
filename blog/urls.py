@@ -31,6 +31,9 @@ urlpatterns = [
     path('<int:pk>/', views.PostDetail.as_view()),
     path('create/', views.PostCreate.as_view()),
     path('delete_post/<int:pk>', views.delete_post, name='delete_post'),
-    path('confirm/<int:post_pk>/<int:user_pk>/', views.confirm_applicant),
+    path('applicant/confirm/<int:post_pk>/<int:user_pk>/', views.confirm_applicant),
+    path('applicant/cancel/<int:post_pk>/<int:user_pk>/', views.cancel_applicant),
+    path('participant/cancel/<int:post_pk>/<int:user_pk>/',
+         views.cancel_participant),
     path('toggle/<int:pk>/', views.toggle_activate)
 ]

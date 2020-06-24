@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, HttpResponseRedirect, get_object_
 from .models import (
     CardSet, Card, TrySet,
     TryRecord, MissionSoundModel, MissionImageModel,
-    Notice, UploadBase, CommentRoom
+    Notice, UploadBase, CommentRoom, UploadFileModel
 )
 from django.urls import reverse
 from blog.models import *
@@ -12,9 +12,12 @@ from django.db.models import Q, Max, F
 from django.utils import timezone
 from .forms import *
 import random
-import csv, io, os
+import csv
+import io
+import os
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
+
 
 class CardSetList(ListView):
     model = CardSet
@@ -40,7 +43,6 @@ class CardSetList(ListView):
         # 자기 자신의 카드셋 별 평균
         # 스터디룸 아이디로 카드셋을 검색하고
         # 카드셋 별 마지막 트라이셋 검색
-
         cardsets = CardSet.objects.filter(post__id=cardset)
         trysets = []
         for cardset in cardsets:
@@ -54,18 +56,17 @@ class CardSetList(ListView):
                 total.append(0)
                 continue
 
-            correct = ts.records.all().filter(card__back=F('result'))
-            incorrect = ts.records.all().exclude(card__back=F('result'))
-            total_length = correct.count() + incorrect.count()
-            total.append(correct.count()/total_length*100 if total_length > 0 else 0)
+            correct = ts.correct
+            incorrect = ts.incorrect
+            total_length = correct + incorrect
+            total.append(correct/total_length *
+                         100 if total_length > 0 else 0)
 
         if len(total) > 0:
             from functools import reduce
             return reduce(lambda x, y: x + y, total) / len(trysets)
         else:
             return 0
-
-
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super(CardSetList, self).get_context_data(**kwargs)
@@ -75,32 +76,49 @@ class CardSetList(ListView):
         context['comment_form'] = CommentForm()
         context['category_list'] = Category.objects.all()
         context['cardset_id'] = post_id
-        context['posts_without_category'] = Post.objects.filter(category=None).count()
-        context['my_average'] = self.calc_my_average(post_id, self.request.user)
+        context['posts_without_category'] = Post.objects.filter(
+            category=None).count()
+        context['my_average'] = self.calc_my_average(
+            post_id, self.request.user)
         post = get_object_or_404(Post, pk=post_id)
         context['post'] = post
         if user == post.author:
             comment_room = post.comment_rooms.all()
         else:
-            comment_room = CommentRoom.objects.filter(post=post, participant=user)
+            comment_room = CommentRoom.objects.filter(
+                post=post, participant=user)
         context['comment_rooms'] = comment_room
         try:
             context['youtube_url'] = post.youtube_url.all()[0]
         except:
             context['youtube_url'] = None
+        context['sound_files'] = post.sound_files.all()
+
         average = 0
         for p in post.participants.all():
             average += self.calc_my_average(post_id, p)
         participants_count = post.participants.all().count()
+
+        participants = post.participants.all()
+        for participant in participants:
+            for cardset in post.cardsets.all():
+                try:
+                    tryset = TrySet.objects.get(
+                        user=participant, cardset=cardset)
+                except:
+                    participants_count -= 1
+                break
+
         if participants_count > 0:
-            average /= post.participants.all().count()
+            average /= participants_count
         else:
             average = 0
 
         context['average'] = average
         context['notice_form'] = NoticeForm()
         # 공지사항 가져오기
-        context['notices'] = Notice.objects.filter(post=post).order_by('-created_at')
+        context['notices'] = Notice.objects.filter(
+            post=post).order_by('-created_at')
 
         # 업로드 리스트
         uploads = UploadBase.objects.filter(post=post)
@@ -130,8 +148,8 @@ class CardSetList(ListView):
 
         context['upload_chart_data'] = upload_detail
 
-
         return context
+
 
 def write_notice(request, pk):
     # form으로 처리
@@ -147,6 +165,7 @@ def write_notice(request, pk):
             pass
     return redirect(reverse('studyroom:study_room', args=[pk]))
 
+
 def write_upload(request, pk):
     # form으로 처리
     if request.method == 'POST':
@@ -159,6 +178,7 @@ def write_upload(request, pk):
         else:
             pass
     return redirect(reverse('studyroom:study_room', args=[pk]))
+
 
 def get_card(tryset, cardset):
     card_ids = []
@@ -236,15 +256,24 @@ def try_view(request, pk):
         )
         new_record.save()
 
+        if cresult == selected_card.back:
+            tryset.correct += 1
+        else:
+            tryset.incorrect += 1
+        tryset.save()
+
         target_card = get_card(tryset, cardset)
         if target_card is None:
             tryset.is_finished = True
             tryset.save()
+
+            tryset.records.all().delete()
+
             return HttpResponseRedirect(f'/studyroom/try/{tryset.id}/result/')
 
     incorrects = get_random_card(target_card.id, 3)
     incorrects += list(Card.objects.filter(pk=target_card.pk))
-    incorrects = sorted(incorrects, key = lambda x: random.random())
+    incorrects = sorted(incorrects, key=lambda x: random.random())
 
     return render(request, 'studyroom/cardset_try.html', {
         'card': target_card,
@@ -259,15 +288,13 @@ def try_view(request, pk):
 def tyr_result(request, pk):
     # tryset 가져오기
     tryset = get_object_or_404(TrySet, pk=pk)
-    correct = tryset.records.all().filter(card__back=F('result'))
-    incorrect = tryset.records.all().exclude(card__back=F('result'))
+    correct_count = tryset.correct
+    incorrect_count = tryset.incorrect
     return render(request, 'studyroom/cardset_try_result.html', {
         'tryset': tryset,
-        'correct': correct,
-        'correct_count': len(correct),
-        'incorrect': incorrect,
-        'incorrect_count': len(incorrect),
-        'total': len(correct) + len(incorrect),
+        'correct_count': correct_count,
+        'incorrect_count': incorrect_count,
+        'total': correct_count + incorrect_count,
         'category_list': Category.objects.all(),
         'posts_without_category': Post.objects.filter(category=None).count()
     })
@@ -281,7 +308,8 @@ def tyr_result_total(request, pk):
     limit = timezone.timedelta(minutes=5)
     start_limit = now - limit
     target_ts = TrySet.objects.filter(
-        Q(user=request.user) & Q(cardset__post=post) & (Q(is_finished=True) | Q(started_at__lt=start_limit))
+        Q(user=request.user) & Q(cardset__post=post) & (
+            Q(is_finished=True) | Q(started_at__lt=start_limit))
     ).distinct().order_by('-started_at')
     for ts in target_ts:
         correct = ts.records.all().filter(card__back=F('result'))
@@ -396,16 +424,18 @@ def study_room(request):
         'study_room.html'
     )
 
+
 def create_comment(request, pk, username):
     post = Post.objects.get(pk=pk)
     user = request.user
 
     if post.author != user:
         comment_room = CommentRoom.objects.get(post=post, participant=user)
-    else :
+    else:
         participant = User.objects.get(username=username)
         print(username, participant)
-        comment_room = CommentRoom.objects.get(post=post, participant=participant)
+        comment_room = CommentRoom.objects.get(
+            post=post, participant=participant)
 
     if request.method == 'POST':
         comment_form = CommentForm(request.POST)
@@ -417,6 +447,7 @@ def create_comment(request, pk, username):
             return redirect('/studyroom/study_room/' + str(pk) + '/')
         else:
             return redirect('/studyroom/study_room/' + str(pk) + '/')
+
 
 @csrf_exempt
 def change_youtube_url(request, pk):
@@ -432,13 +463,12 @@ def change_youtube_url(request, pk):
         youtube_url.save()
     except:
         youtube_url = YoutubeUrl.objects.create(
-            post = post,
-            video_url = url
+            post=post,
+            video_url=url
         )
 
-    return JsonResponse({"result" : "change"})
-        
-        
+    return JsonResponse({"result": "change"})
+
 
 class CommentUpdate(LoginRequiredMixin, UpdateView):
     model = Scomment
@@ -450,14 +480,16 @@ class CommentUpdate(LoginRequiredMixin, UpdateView):
             raise PermissionError('Comment 수정 권한이 없습니다.')
         return comment
 
+
 def delete_comment(request, pk, studyroom_pk):
     comment = Scomment.objects.get(pk=pk)
-    
+
     if request.user == comment.author:
         comment.delete()
         return redirect('/studyroom/study_room/' + str(studyroom_pk) + '/')
     else:
         raise PermissionError('Comment 삭제 권한이 없습니다.')
+
 
 def delete_image(request, image_pk):
     image = MissionImageModel.objects.get(pk=image_pk)
@@ -465,8 +497,9 @@ def delete_image(request, image_pk):
     image.delete()
 
     return JsonResponse({
-        "result" : "image delete"
+        "result": "image delete"
     })
+
 
 def delete_sound(request, sound_pk):
     sound = MissionSoundModel.objects.get(pk=sound_pk)
@@ -474,8 +507,9 @@ def delete_sound(request, sound_pk):
     sound.delete()
 
     return JsonResponse({
-        "result" : "sound delete"
+        "result": "sound delete"
     })
+
 
 def delete_notice(request, notice_pk):
     notice = Notice.objects.get(pk=notice_pk)
@@ -483,5 +517,69 @@ def delete_notice(request, notice_pk):
     notice.delete()
 
     return JsonResponse({
-        "result" : "notice delete"
+        "result": "notice delete"
+    })
+
+
+def create_vocatest(request, post_id):
+    post = Post.objects.get(pk=post_id)
+
+    name = request.POST.get('vocatest_name', 'default name')
+    limit = request.POST.get('vocatest_limit', '20')
+
+    new_cardset = CardSet.objects.create(
+        post=post,
+        name=name,
+        limit=int(limit)
+    )
+
+    return redirect(reverse('studyroom:study_room', args=[post_id]))
+
+
+def register_csv(request, post_id, cardset_id):
+    post = Post.objects.get(pk=post_id)
+    cardset = CardSet.objects.get(pk=cardset_id)
+
+    csv_file = request.FILES.getlist('cardset_csv')
+
+    upload_file = UploadFileModel.objects.create(
+        file=csv_file[0]
+    )
+
+    with open(upload_file.file.path, 'r', encoding='UTF8') as f:
+        reader = csv.reader(f)
+        name, ext = os.path.splitext(os.path.basename(upload_file.file.path))
+
+        for row in reader:
+            new_card = Card(
+                card_set=cardset,
+                front=row[0],
+                back=row[1]
+            )
+            new_card.save()
+
+    return redirect(reverse('studyroom:study_room', args=[post_id]))
+
+
+def register_sound(request, post_id):
+    post = Post.objects.get(pk=post_id)
+
+    title = request.POST.get('sound_file_title', '')
+    sound_file = request.FILES.getlist('sound_file')
+
+    new_sound = SoundUrl.objects.create(
+        title=title,
+        sound_file=sound_file[0],
+        post=post
+    )
+
+    return redirect(reverse('studyroom:study_room', args=[post_id]))
+
+
+def delete_week_sound(request, sound_id):
+    sound_file = SoundUrl.objects.get(pk=sound_id)
+    sound_file.delete()
+
+    return JsonResponse({
+        "result": "delete week sound"
     })
