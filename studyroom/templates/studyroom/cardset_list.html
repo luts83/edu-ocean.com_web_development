@@ -259,28 +259,27 @@ title, content, author, created_at
             type: 'bar',
             data: {
                 labels: [
-                {% comment %} 참여자 이름 나열 {% endcomment %}
-                {% for p in upload_chart_data %}
-                    '{{ p }}',
-                {% endfor %}
-
+                    {% comment %} 참여자 이름 나열 {% endcomment %}
+                    {% for p in upload_chart_data %}
+                        '{{ p }}',
+                    {% endfor %}
                 ],
                 datasets: [{
                     data: [
                         {% comment %} {{my_average}},{{average}} {% endcomment %}
-                        {% for k, v in upload_chart_data.items %}
-                            {{ v }},
+                        {% for v in upload_chart_data.values %}
+                            '{{ v.value }}',
                         {% endfor %}
                     ],
                     backgroundColor: [
-                        'rgba(255, 99, 132, 0.2)',
-                        'rgba(54, 162, 235, 0.2)',
-
+                        {% for v in upload_chart_data.values %}
+                            '{{ v.background_color }}',
+                        {% endfor %}
                     ],
                     borderColor: [
-                        'rgba(255, 99, 132, 1)',
-                        'rgba(54, 162, 235, 1)',
-
+                        {% for v in upload_chart_data.values %}
+                            '{{ v.border_color }}',
+                        {% endfor %}
                     ],
                     borderWidth: 1
                 }]
@@ -471,4 +470,3 @@ title, content, author, created_at
 </script>
 
 {% endblock %}
-

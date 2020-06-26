@@ -1,23 +1,32 @@
 from .base import *
-DEBUG = True
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-#     }
-# }
+DEBUG = False
+
+
+INSTALLED_APPS += ['storages', ]
+
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'eduocean', # 데이터베이스 이름
-        'USER': 'eduocean', # 접속 사용자 이름
-        'PASSWORD': 'roots1983', # 접속 비밀번호
-        'HOST': 'eduocean.cadcrhj7dhqo.us-east-2.rds.amazonaws.com',
-        'PORT': '3306', # 기본 포트
+        'NAME': 'eduocean',
+        'USER': secrets['DATABASES_USER'],
+        'PASSWORD': secrets['DATABASES_PASSWORD'],
+        'HOST': secrets['DATABASES_HOST'],
+        'PORT': '3306',
         'OPTIONS': {
             'init_command': 'SET sql_mode="STRICT_TRANS_TABLES"'
         }
     }
 }
+
+# AWS S3
+AWS_ACCESS_KEY_ID = secrets['AWS_ACCESS_KEY_ID']
+AWS_SECRET_ACCESS_KEY = secrets['AWS_SECRET_ACCESS_KEY']
+AWS_STORAGE_BUCKET_NAME = secrets['AWS_STORAGE_BUCKET_NAME']
+AWS_REGION = 'us-east-2'
+
+# S3 Storage
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+# STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+

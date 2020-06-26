@@ -55,6 +55,7 @@ class Post(models.Model):
     def __str__(self):
         return '{} :: {}'.format(self.title, self.author)
 
+
     def get_absolute_url(self):
         return '/blog/{}/'.format(self.pk)
 
@@ -108,11 +109,14 @@ class RegForm(models.Model):
 
     post = models.ForeignKey(
         Post, on_delete=models.CASCADE, blank=True, null=True)
+    check_agreement = models.BooleanField(
+        default=False, help_text="이용약관, 개인정보 수집 및 이용 동의")
     name = models.CharField(
         max_length=10)
     email = models.EmailField(max_length=30)
     user_id = models.CharField(
         max_length=15)
+    user_mobile = models.CharField(max_length=15)
     check_content = MarkdownxField()
     check_level = models.BooleanField(
         default=False, help_text="스터디 난이도를 확인하셨나요?")

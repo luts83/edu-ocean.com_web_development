@@ -14,9 +14,11 @@ class RegForm(forms.ModelForm):
     class Meta:
         model = RegForm
         fields = (
+            'check_agreement',
             'name',
             'email',
             'user_id',
+            'user_mobile',
             'check_level',
             'check_thr',
             'check_status',

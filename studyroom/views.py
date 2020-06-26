@@ -46,16 +46,13 @@ class CardSetList(ListView):
         cardsets = CardSet.objects.filter(post__id=cardset)
         trysets = []
         for cardset in cardsets:
-            trysets.append(
-                cardset.trysets.all().filter(user=user).order_by('-started_at').first()
-            )
+            tryset = cardset.trysets.filter(user=user, is_finished=True).order_by(
+                '-started_at').first()
+            if tryset:
+                trysets.append(tryset)
 
         total = []
         for ts in trysets:
-            if ts is None:
-                total.append(0)
-                continue
-
             correct = ts.correct
             incorrect = ts.incorrect
             total_length = correct + incorrect
@@ -102,10 +99,9 @@ class CardSetList(ListView):
         participants = post.participants.all()
         for participant in participants:
             for cardset in post.cardsets.all():
-                try:
-                    tryset = TrySet.objects.get(
-                        user=participant, cardset=cardset)
-                except:
+                tryset = TrySet.objects.filter(
+                    user=participant, cardset=cardset)
+                if not tryset:
                     participants_count -= 1
                 break
 
@@ -129,22 +125,29 @@ class CardSetList(ListView):
         upload_total = uploads.count()
         upload_detail = {}
         for p in post.participants.all():
-            upload_detail[p.username] = 0
+            upload_detail[p.username] = {}
+            upload_detail[p.username]['value'] = 0
+            upload_detail[p.username]['background_color'] = 'rgba(0, 0, 0, 0.2)'
+            upload_detail[p.username]['border_color'] = 'rgba(0, 0, 0, 1)'
 
             for u in uploads:
                 imgs = MissionImageModel.objects.filter(base=u, user=p)
                 snds = MissionSoundModel.objects.filter(base=u, user=p)
 
                 if imgs.exists():
-                    upload_detail[p.username] += 1
+                    upload_detail[p.username]['value'] += 1
                     continue
 
                 if snds.exists():
-                    upload_detail[p.username] += 1
+                    upload_detail[p.username]['value'] += 1
                     continue
 
-            upload_detail[p.username] /= 4
-            upload_detail[p.username] *= 100
+            upload_detail[p.username]['value'] /= 4
+            upload_detail[p.username]['value'] *= 100
+
+            if p == user:
+                upload_detail[p.username]['background_color'] = 'rgba(54, 162, 235, 0.2)'
+                upload_detail[p.username]['border_color'] = 'rgba(54, 162, 235, 1)'
 
         context['upload_chart_data'] = upload_detail
 

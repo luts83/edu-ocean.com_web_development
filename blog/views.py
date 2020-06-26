@@ -109,9 +109,11 @@ class PostDetail(DetailView):
     def post(self, request, *args, **kwargs):
         user = request.user
 
+        check_agreement = request.POST.get('check_agreement', '')
         name = request.POST.get('name', '')
         email = request.POST.get('email', '')
         user_id = request.POST.get('user_id', '')
+        user_mobile = request.POST.get('user_mobile', '')
         check_level = request.POST.get('check_level', '')
         check_status = request.POST.get('check_status', '')
         check_thr = request.POST.get('check_thr', '')
@@ -121,9 +123,11 @@ class PostDetail(DetailView):
 
         new_reg = RegForm.objects.create(
             post=post,
+            check_agreement=check_agreement,
             name=name,
             email=email,
             user_id=user_id,
+            user_mobile=user_mobile,
             check_level=check_level,
             check_status=check_status,
             check_thr=check_thr,

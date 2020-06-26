@@ -39,15 +39,18 @@ admin.site.register(SoundUrl)
 class RegForm(admin.ModelAdmin):
     list_display = (
         'post',
+        'check_agreement',
         'name',
         'email',
         'user_id',
+        'user_mobile',
         'check_level',
         'check_thr',
         'check_status',
         'bank_account'
     )
     list_filter = (
+        'post',
         'check_level',
         'check_thr',
         'check_status',
