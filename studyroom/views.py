@@ -17,6 +17,7 @@ import io
 import os
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
+from django.core.files.storage import default_storage as storage
 
 
 class CardSetList(ListView):
@@ -549,9 +550,8 @@ def register_csv(request, post_id, cardset_id):
         file=csv_file[0]
     )
 
-    with open(upload_file.file.path, 'r', encoding='UTF8') as f:
+    with storage.open(upload_file.file.name, mode='r') as f:
         reader = csv.reader(f)
-        name, ext = os.path.splitext(os.path.basename(upload_file.file.path))
 
         for row in reader:
             new_card = Card(
