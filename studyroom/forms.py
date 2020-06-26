@@ -8,7 +8,7 @@ class UploadFileForm(forms.Form):
 
 class MissionSoundForm(forms.ModelForm):
     sfile = forms.FileField(
-        label=' 소리 '
+        label = ' 음성파일 '
     )
 
     class Meta:
@@ -18,7 +18,7 @@ class MissionSoundForm(forms.ModelForm):
 
 class MissionImageForm(forms.ModelForm):
     ifile = forms.FileField(
-        label=' 이미지 '
+        label = ' 사진파일 '
     )
 
     class Meta:

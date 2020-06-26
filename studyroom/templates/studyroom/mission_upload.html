@@ -32,8 +32,11 @@
           />
           <button onclick="delete_image({{i.pk}})">삭제</button>
         </li>
-        {% endfor %} {% for s in snds %}
+        {% endfor %}
+
+        {% for s in snds %}
         <li>
+          <h5>{{ s.user.username }}</h5>
           <audio controls>
             <source src="{{s.sfile.url}}" />
           </audio>
@@ -69,7 +72,7 @@
         const resize_ifile = (ifile_pk) => {
           const ifile = document.getElementById(`ifile_${ifile_pk}`);
           if (ifile.dataset.toggle == "false") {
-            ifile.style.width = "600px";
+            ifile.style.width = "800px";
             ifile.dataset.toggle = "true";
           } else {
             ifile.style.width = "400px";

@@ -34,7 +34,7 @@ class Tag(models.Model):
 class Post(models.Model):
     content = MarkdownxField()
     title = models.CharField(max_length=100)
-    head_image = models.ImageField(upload_to='blog/%Y/%m/%d/', blank=True)
+    head_image = models.ImageField(upload_to='head_images/%Y/%m/%d/', blank=True)
     created = models.DateTimeField(auto_now_add=True)
     author = models.ForeignKey(
         User, on_delete=models.CASCADE, null=True, default=1)

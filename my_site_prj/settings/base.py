@@ -56,7 +56,6 @@ INSTALLED_APPS = [
     'blog',
     'basecamp',
     'studyroom',
-    'storages',
 
 
 ]
@@ -187,12 +186,3 @@ EMAIL_HOST_PASSWORD = secrets['EMAIL_HOST_PASSWORD']
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 
-# AWS S3
-AWS_ACCESS_KEY_ID = secrets['AWS_ACCESS_KEY_ID']
-AWS_SECRET_ACCESS_KEY = secrets['AWS_SECRET_ACCESS_KEY']
-AWS_STORAGE_BUCKET_NAME = secrets['AWS_STORAGE_BUCKET_NAME']
-AWS_REGION = 'us-east-2'
-
-# S3 Storage
-DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-# STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'

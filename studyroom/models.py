@@ -71,7 +71,7 @@ class UploadBase(models.Model):
 class MissionImageModel(models.Model):
     user = models.ForeignKey(
         User, on_delete=models.SET_NULL, related_name="imgfiles", null=True, blank=True)
-    ifile = models.FileField(null=True, upload_to="%Y%m%d")
+    ifile = models.FileField(null=True, upload_to='mission_images/%Y/%m/%d/')
     base = models.ForeignKey(UploadBase, on_delete=models.SET_NULL,
                              related_name="images", null=True, blank=True)
 
@@ -79,7 +79,7 @@ class MissionImageModel(models.Model):
 class MissionSoundModel(models.Model):
     user = models.ForeignKey(User, on_delete=models.SET_NULL,
                              related_name="soundfiles", null=True, blank=True)
-    sfile = models.FileField(null=True, upload_to="%Y%m%d")
+    sfile = models.FileField(null=True, upload_to='mission_sounds/%Y/%m/%d/')
     base = models.ForeignKey(UploadBase, on_delete=models.SET_NULL,
                              related_name="sounds", null=True, blank=True)
 
