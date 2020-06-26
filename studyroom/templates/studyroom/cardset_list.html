@@ -119,7 +119,9 @@ title, content, author, created_at
                 <audio controls="controls">
                     <source src="{{sound_file.sound_file.url}}">
                 </audio>
+            {% if post.author == request.user %}
                 &nbsp;<button onclick="delete_week_sound({{sound_file.id}})">삭제</button>
+            {% endif %}
             {% endfor %}
         </div>
 
