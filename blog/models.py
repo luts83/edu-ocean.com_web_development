@@ -146,7 +146,7 @@ class RegForm(models.Model):
     )
     bank_account = models.CharField(
         max_length=50, help_text="은행명과 계좌번호를 입력해 주세요 | 예시 : 3333-16-2308048 (카카오뱅크, 신은혜)")
-    created = models.DateTimeField(auto_now_add=True)
+    created = models.DateTimeField(auto_now_add=True, null=True, blank=True)
 
     def __str__(self):
         return self.name
