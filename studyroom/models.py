@@ -58,7 +58,7 @@ class TryRecord(models.Model):
 
 
 class UploadFileModel(models.Model):
-    file = models.FileField(null=True, upload_to="%Y%m%d")
+    file = models.FileField(null=True, upload_to='studyroom/%Y/%m/%d/')
 
 
 class UploadBase(models.Model):

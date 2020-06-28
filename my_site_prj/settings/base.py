@@ -56,6 +56,7 @@ INSTALLED_APPS = [
     'blog',
     'basecamp',
     'studyroom',
+    'rangefilter',
 
 
 ]

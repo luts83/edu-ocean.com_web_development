@@ -22,5 +22,6 @@ class RegForm(forms.ModelForm):
             'check_level',
             'check_thr',
             'check_status',
+            'check_job',
             'bank_account'
         )

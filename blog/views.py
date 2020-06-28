@@ -117,6 +117,7 @@ class PostDetail(DetailView):
         check_level = request.POST.get('check_level', '')
         check_status = request.POST.get('check_status', '')
         check_thr = request.POST.get('check_thr', '')
+        check_job = request.POST.get('check_job', '')
         bank_account = request.POST.get('bank_account', '')
 
         post = self.get_object()
@@ -131,6 +132,7 @@ class PostDetail(DetailView):
             check_level=check_level,
             check_status=check_status,
             check_thr=check_thr,
+            check_job=check_job,
             bank_account=bank_account,
         )
 

@@ -107,6 +107,14 @@ class RegForm(models.Model):
         ("5", "기타"),
     )
 
+    CHOICE_JOB = (
+        ("1", "중고등학생"),
+        ("2", "대학/원생"),
+        ("3", "직장인"),
+        ("4", "취업준비중"),
+        ("5", "기타"),
+    )
+
     post = models.ForeignKey(
         Post, on_delete=models.CASCADE, blank=True, null=True)
     check_agreement = models.BooleanField(
@@ -129,8 +137,16 @@ class RegForm(models.Model):
         default='1',
         help_text="어떤 경로로 스터디를 알게되셨나요?"
     )
+    check_job = models.CharField(
+        max_length=1,
+        choices=CHOICE_JOB,
+        blank=True,
+        default='1',
+        help_text="현재 직업은 무엇인가요?"
+    )
     bank_account = models.CharField(
         max_length=50, help_text="은행명과 계좌번호를 입력해 주세요 | 예시 : 3333-16-2308048 (카카오뱅크, 신은혜)")
+    created = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.name

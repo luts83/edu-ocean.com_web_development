@@ -1,5 +1,6 @@
 from django.contrib import admin
 from .models import *
+from rangefilter.filter import DateRangeFilter, DateTimeRangeFilter
 
 
 class CategoryAdmin(admin.ModelAdmin):
@@ -11,23 +12,6 @@ class TagAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Post)
-# class Post(admin.ModelAdmin):
-#     list_display = (
-#         'email',
-#         'created',
-#         'author',
-#         'category',
-#         'tags',
-#         'applicant',
-#         'participants',
-#     )
-#     list_filter = (
-#         'created',
-#         'author',
-#         'category',
-#         'tags',
-#     )
-
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(Tag, TagAdmin)
 admin.site.register(Comment)
@@ -47,11 +31,17 @@ class RegForm(admin.ModelAdmin):
         'check_level',
         'check_thr',
         'check_status',
-        'bank_account'
+        'check_job',
+        'bank_account',
+        'created',
     )
     list_filter = (
         'post',
         'check_level',
         'check_thr',
         'check_status',
+        'check_job',
+        ('created', DateRangeFilter),
     )
+    search_fields = ['name', 'user_id', 'user_mobile']
+
