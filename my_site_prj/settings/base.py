@@ -28,7 +28,7 @@ SECRET_KEY = secrets['SECRET_KEY']
 # SECURITY WARNING: don't run with debug turned on in production!
 
 
-ALLOWED_HOSTS = ["*"]
+
 
 
 # Application definition
@@ -47,6 +47,7 @@ INSTALLED_APPS = [
 
     'crispy_forms',
     'markdownx',
+    'rangefilter',
 
     # 'allauth.socialaccount.providers.facebook',
     # 'allauth.socialaccount.providers.kakao',
@@ -56,7 +57,7 @@ INSTALLED_APPS = [
     'blog',
     'basecamp',
     'studyroom',
-    'rangefilter',
+
 
 
 ]
@@ -170,7 +171,7 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 SITE_ID = 1
 
 LOGIN_REDIRECT_URL = '/'
-ACCOUNT_EMAIL_VERIFICATION = 'none'
+ACCOUNT_EMAIL_VERIFICATION = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')

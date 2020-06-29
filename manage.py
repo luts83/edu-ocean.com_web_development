@@ -4,7 +4,7 @@ import os
 import sys
 # from django.contrib.sites.models import Site
 #
-# Site.objects.create(pk=1, domain='http://127.0.0.1:8000/', name='http://eduocean.com/')
+# Site.objects.create(pk=1, domain='http://127.0.0.1:8000/', name='http://edu-ocean.com/')
 
 
 
