@@ -89,14 +89,14 @@ title, content, author, created_at
             <!-- change url start -->
             {% if post.author == request.user %}
             <input type="text" id="url_input">
-            <button onclick="change_url({{post.pk}})">수정</button>
+            <button onclick="change_url({{ post.pk }})">수정</button>
             <br><br>
             {% endif %}
             <!-- change url end -->
 
-            <a class="btn btn-info btn-lg" href={{youtube_url.channel_url}}>유튜브 채널 바로가기 &raquo;</a>
-            <br>
-            <br>
+<!--            <a class="btn btn-info btn-lg" href={{ youtube_url.channel_url }} target="_blank">유튜브 채널 바로가기 &raquo;</a>-->
+<!--            <br>-->
+<!--            <br>-->
         </div>
 
         <div class="col-md-12 mb-5">

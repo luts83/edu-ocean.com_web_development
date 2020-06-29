@@ -472,6 +472,7 @@ def change_youtube_url(request, pk):
         )
 
     return JsonResponse({"result": "change"})
+    print(change_youtube_url)
 
 
 class CommentUpdate(LoginRequiredMixin, UpdateView):
