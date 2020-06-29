@@ -1,7 +1,7 @@
 from .base import *
 
 DEBUG = False
-ALLOWED_HOSTS = ['edu-ocean.com', 'www.edu-ocean.com']
+
 
 INSTALLED_APPS += ['storages', ]
 
