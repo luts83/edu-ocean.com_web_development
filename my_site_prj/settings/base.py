@@ -44,22 +44,19 @@ INSTALLED_APPS = [
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
-
-    'crispy_forms',
-    'markdownx',
-    'rangefilter',
-
     # 'allauth.socialaccount.providers.facebook',
     # 'allauth.socialaccount.providers.kakao',
     'allauth.socialaccount.providers.google',
     # 'allauth.socialaccount.providers.naver',
 
+    'crispy_forms',
+    'markdownx',
+    'rangefilter',
+
+
     'blog',
     'basecamp',
     'studyroom',
-
-
-
 ]
 
 MIDDLEWARE = [
@@ -169,6 +166,8 @@ MARKDOWNX_MEDIA_PATH = datetime.now().strftime('markdownx/%Y/%m/%d')
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 SITE_ID = 1
+
+USE_X_FORWARDED_HOST = True
 
 LOGIN_REDIRECT_URL = '/'
 ACCOUNT_EMAIL_VERIFICATION = True
