@@ -36,10 +36,10 @@
 
 
         {% if i.is_activated %}
-        <h2 class="card-title">{{ i.title }}<strong style="color:red;"> : 진행중</strong></h2>
+        <h2 class="card-title">{{ i.title }}<strong style="color:red;"> : 모집중</strong></h2>
         <p class="card-text">{{ i.get_markdown_content | striptags | truncatewords_html:30 }}</p>
         {% else  %}
-        <h2 class="card-title">{{ i.title }}<strong style="color:red;"> : Completed</strong></h2>
+        <h2 class="card-title">{{ i.title }}<strong style="color:red;"> : 완료</strong></h2>
         <p class="card-text">{{ i.get_markdown_content | striptags | truncatewords_html:30 }}</p>
         {% endif %}
 
