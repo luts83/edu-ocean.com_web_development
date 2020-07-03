@@ -79,7 +79,7 @@ class YoutubeUrl(models.Model):
 class SoundUrl(models.Model):
     title = models.CharField(
         max_length=255, default='default week', blank=True)
-    sound_file = models.FileField(null=True, upload_to="%Y%m%d")
+    sound_file = models.FileField(null=True, upload_to='studyroom_sound/%Y/%m/%d/')
     post = models.ForeignKey(Post, on_delete=models.CASCADE,
                              related_name="sound_files", null=True, blank=True)
 

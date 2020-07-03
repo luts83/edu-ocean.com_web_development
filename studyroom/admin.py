@@ -3,7 +3,7 @@ from .models import *
 from rangefilter.filter import DateRangeFilter, DateTimeRangeFilter
 
 # admin.site.register(Card)
-admin.site.register(CardSet)
+# admin.site.register(CardSet)
 # admin.site.register(TrySet)
 admin.site.register(TryRecord)
 admin.site.register(UploadFileModel)
@@ -13,6 +13,18 @@ admin.site.register(Notice)
 admin.site.register(MissionImageModel)
 admin.site.register(MissionSoundModel)
 admin.site.register(UploadBase)
+
+
+@admin.register(CardSet)
+class CardSet(admin.ModelAdmin):
+    list_display = (
+        'post',
+        'name',
+        'limit',
+    )
+    list_filter = (
+        'post',
+    )
 
 @admin.register(Card)
 class Card(admin.ModelAdmin):
