@@ -17,6 +17,7 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
+from django.http import HttpResponse
 
 urlpatterns = [
     path('blog/', include('blog.urls')),
@@ -25,6 +26,8 @@ urlpatterns = [
     path('accounts/', include('allauth.urls')),
     path('studyroom/', include('studyroom.urls')),
     path('', include('basecamp.urls')),
+    path('robots.txt/', lambda x: HttpResponse("User-Agent: *\nDisallow: /",
+                                               content_type="text/plain")),
 ]
 
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_URL)
