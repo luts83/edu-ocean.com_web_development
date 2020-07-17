@@ -26,7 +26,7 @@ urlpatterns = [
     path('accounts/', include('allauth.urls')),
     path('studyroom/', include('studyroom.urls')),
     path('', include('basecamp.urls')),
-    path('robots.txt/', lambda x: HttpResponse("User-Agent: *\nDisallow: /",
+    path('robots.txt/', lambda x: HttpResponse("User-Agent:*\nDisallow: ",
                                                content_type="text/plain")),
 ]
 
