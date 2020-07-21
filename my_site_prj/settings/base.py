@@ -57,6 +57,8 @@ INSTALLED_APPS = [
     'blog',
     'basecamp',
     'studyroom',
+
+    'django_extensions',
 ]
 
 MIDDLEWARE = [
@@ -186,4 +188,10 @@ EMAIL_HOST_USER = secrets['EMAIL_HOST_USER']
 EMAIL_HOST_PASSWORD = secrets['EMAIL_HOST_PASSWORD']
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
+
+GRAPH_MODELS = {
+  'all_applications': True,
+  'group_models': True,
+}
+
 
