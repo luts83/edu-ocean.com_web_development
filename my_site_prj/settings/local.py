@@ -1,6 +1,9 @@
 from .base import *
 
 DEBUG = True
+INSTALLED_APPS += ['django_extensions', ]
+
+
 
 # DATABASES = {
 #     'default': {
@@ -22,4 +25,9 @@ DATABASES = {
             'charset': 'utf8mb4'
         }
     }
+}
+
+GRAPH_MODELS = {
+  'all_applications': True,
+  'group_models': True,
 }
