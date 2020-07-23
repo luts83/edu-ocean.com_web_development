@@ -15,6 +15,8 @@ Including another URLconf
 """
 from django.urls import path, include
 from . import views
+from django.contrib.sitemaps import GenericSitemap
+from django.contrib.sitemaps.views import sitemap
 # from django.contrib.auth.views import LoginView, LogoutView
 app_name = 'blog'
 
@@ -36,4 +38,10 @@ urlpatterns = [
     path('participant/cancel/<int:post_pk>/<int:user_pk>/',
          views.cancel_participant),
     path('toggle/<int:pk>/', views.toggle_activate)
+    path('sitemap.xml', sitemap, {'sitemaps': {'post': GenericSitemap(sitemap_dict, priority=0.6, protocol='http')}},
+         name='django.contrib.sitemaps.views.sitemap'),
 ]
+sitemap_dict = {
+    'queryset': Post.objects.filter(is_active=True).order_by('-updated_at'),
+    'date_field': 'updated_at',
+}

@@ -28,6 +28,7 @@ urlpatterns = [
     path('', include('basecamp.urls')),
     path('robots.txt/', lambda x: HttpResponse("User-Agent:*\nDisallow: ",
                                                content_type="text/plain")),
+    path('sitemap.xml', sitemap, {'sitemaps': sitemaps}, name='sitemap')
 ]
 
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_URL)

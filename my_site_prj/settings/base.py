@@ -58,6 +58,8 @@ INSTALLED_APPS = [
     'basecamp',
     'studyroom',
 
+    'django.contrib.sitemaps',
+
 
 ]
 
