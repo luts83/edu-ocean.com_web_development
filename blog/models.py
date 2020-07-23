@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import *
 from markdownx.models import MarkdownxField
 from markdownx.utils import markdown
-from django.shortcuts import reverse
+
 
 
 class Category(models.Model):
@@ -152,5 +152,3 @@ class RegForm(models.Model):
     def __str__(self):
         return self.name
 
-def get_absolute_url(self):
-  return reverse('detail', args=[self.id])
