@@ -19,6 +19,9 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.http import HttpResponse
 
+from django.contrib.sitemaps import GenericSitemap
+from django.contrib.sitemaps.views import sitemap
+
 urlpatterns = [
     path('blog/', include('blog.urls')),
     path('admin/', admin.site.urls),
@@ -28,8 +31,14 @@ urlpatterns = [
     path('', include('basecamp.urls')),
     path('robots.txt/', lambda x: HttpResponse("User-Agent:*\nDisallow: ",
                                                content_type="text/plain")),
-    path('sitemap.xml', sitemap, {'sitemaps': sitemaps}, name='sitemap')
+    path('sitemap.xml', sitemap, {'sitemaps': {'post': GenericSitemap(sitemap_dict, priority=0.6, protocol='http')}},
+         name='django.contrib.sitemaps.views.sitemap'),
 ]
 
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_URL)
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+sitemap_dict = {
+    'queryset': Post.objects.filter(is_active=True).order_by('-updated_at'),
+    'date_field': 'updated_at',
+}
