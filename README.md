@@ -16,7 +16,7 @@
 ### User Interface Description
 
 Based on findings in the section above, functionalities listed below that supplement the shortcomings of the third party platform are added to measure the factors that are expected to have impact on learnings. 
-
+![에듀오션 UI 그림 (2)](https://user-images.githubusercontent.com/63055047/89772300-b2d16280-daf9-11ea-945d-d25432586523.png)
 - Assignment Updates
 The announcement section is placed at the top of the page so that the visitors can check the updates as soon as they land on the learning page. The participants can check the updates and download the assignments, tutorial announcements, and learning materials that are uploaded by the tutor every week.
 
