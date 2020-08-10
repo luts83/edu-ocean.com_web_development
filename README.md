@@ -1,8 +1,9 @@
 # www.edu-ocean.com
 ## E-learning Platform Design
 
-### The website is built with HTML and Python programming language on top of the Django framework. The Django framework was chosen to shorten the time it takes to develop the site considering the given timeline. The most popular front-end framework ‘Bootstrap’ is used to build a responsive web and distributed via AWS. 
+#### The website is built with HTML and Python programming language on top of the Django framework. The Django framework was chosen to shorten the time it takes to develop the site considering the given timeline. The most popular front-end framework ‘Bootstrap’ is used to build a responsive web and distributed via AWS. 
 ![project_structure](https://user-images.githubusercontent.com/63055047/89772571-21162500-dafa-11ea-818e-be91a226c1be.png)
+
 - Django: Django is an open source web application framework coded with Python programming language. It follows the Model View Controller (MVC) patterns. It provides predefined templates for important functions which enables a rapid development without custom coding involved. 
 
 - Bootstrap: Bootstrap framework includes the most commonly used web elements and it supports both the desktop and mobile design, which makes development quicker and simpler. With this framework, websites that supports various browsers can be developed within a relatively short time frame. 
