@@ -2,7 +2,7 @@
 ## E-learning Platform Design
 
 ### The website is built with HTML and Python programming language on top of the Django framework. The Django framework was chosen to shorten the time it takes to develop the site considering the given timeline. The most popular front-end framework ‘Bootstrap’ is used to build a responsive web and distributed via AWS. 
-
+![project_structure](https://user-images.githubusercontent.com/63055047/89772571-21162500-dafa-11ea-818e-be91a226c1be.png)
 - Django: Django is an open source web application framework coded with Python programming language. It follows the Model View Controller (MVC) patterns. It provides predefined templates for important functions which enables a rapid development without custom coding involved. 
 
 - Bootstrap: Bootstrap framework includes the most commonly used web elements and it supports both the desktop and mobile design, which makes development quicker and simpler. With this framework, websites that supports various browsers can be developed within a relatively short time frame. 
@@ -16,6 +16,7 @@
 ### User Interface Description
 
 Based on findings in the section above, functionalities listed below that supplement the shortcomings of the third party platform are added to measure the factors that are expected to have impact on learnings. 
+![screencapture-edu-ocean-2020-08-10-11_08_37](https://user-images.githubusercontent.com/63055047/89772587-2a9f8d00-dafa-11ea-9a4b-2de72a3d2a00.png)
 ![에듀오션 UI 그림 (2)](https://user-images.githubusercontent.com/63055047/89772300-b2d16280-daf9-11ea-945d-d25432586523.png)
 - Assignment Updates
 The announcement section is placed at the top of the page so that the visitors can check the updates as soon as they land on the learning page. The participants can check the updates and download the assignments, tutorial announcements, and learning materials that are uploaded by the tutor every week.
