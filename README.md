@@ -22,23 +22,23 @@ Based on findings in the section above, functionalities listed below that supple
 - Assignment Updates
 The announcement section is placed at the top of the page so that the visitors can check the updates as soon as they land on the learning page. The participants can check the updates and download the assignments, tutorial announcements, and learning materials that are uploaded by the tutor every week.
 
-- Contents (Study Materials)
+- a. Contents (Study Materials)
 It consists of the recorded lecture (filmed by the tutor) and an audio file for speaking practices. In the case of the recorded lecture that is displayed in an iframe on page, the video is uploaded to the YouTube channel so that it can be viewed even after the class is completed.
 
-- Vocabulary Test
+- b. Vocabulary Test
 A list of important vocabulary is handpicked by the tutor. The participants are required to take a quiz that is created as a form of flash card. 
 
-- Test Score & Progress
+- c. Test Score & Progress
 The participants are able to view their own test scores and the average score of other participants in the study group, and the assignment progress of others. This section is designed to expose participants to others’ progres and give motivations by comparing themselves with others and feeling healthy pressure to complete their goals.
 
-- Assignment Submission
+- d. Assignment Submission
 Utilising the learning materials provided weekly by the tutor, the participants can do a self-paced study within a deadline and submit the assignment which will update the progress bar when the files are uploaded. Only the tutor can view the file and leave comments.
 
-- Comments
+- e. Comments
 It is designed to enable communications between the tutor and the participants. Unlike the instant messenger platform, it excluded the function that participants can communicate with each other. Most importantly, in order to validate the hypothesis, two groups were recruited; one group of people who want a feedback on their assignment from the tutor and the other group who don’t.
 
-- Assignment Submission Page
+- f. Assignment Submission Page
 On this page, participants can upload image files of the notes they took while watching the video class and an audio file that recorded their speaking practice, Once the files are uploaded, it marks the participant’s assignment as ‘completed’.  
 
-- Vocabulary Test Page
+- g. Vocabulary Test Page
 On the vocabulary test page, 30-50 words shortlisted by the tutor will be prompted randomly like a flash card. It can be attempted repeatedly, but the last attempt will be recorded as the final score. All the records is stored in the database for analysis of the change of the scores over time and if it has any relationship with the completion of the assignment.
