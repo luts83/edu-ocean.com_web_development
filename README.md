@@ -19,26 +19,26 @@
 Based on findings in the section above, functionalities listed below that supplement the shortcomings of the third party platform are added to measure the factors that are expected to have impact on learnings. 
 ![screencapture-edu-ocean-2020-08-10-11_12_17](https://user-images.githubusercontent.com/63055047/89772737-781bfa00-dafa-11ea-97c4-04da6d1ad854.png)
 ![에듀오션 UI 그림 (2)](https://user-images.githubusercontent.com/63055047/89772300-b2d16280-daf9-11ea-945d-d25432586523.png)
-- Assignment Updates
+- a. Assignment Updates
 The announcement section is placed at the top of the page so that the visitors can check the updates as soon as they land on the learning page. The participants can check the updates and download the assignments, tutorial announcements, and learning materials that are uploaded by the tutor every week.
 
-- a. Contents (Study Materials)
+- b. Contents (Study Materials)
 It consists of the recorded lecture (filmed by the tutor) and an audio file for speaking practices. In the case of the recorded lecture that is displayed in an iframe on page, the video is uploaded to the YouTube channel so that it can be viewed even after the class is completed.
 
-- b. Vocabulary Test
+- c. Vocabulary Test
 A list of important vocabulary is handpicked by the tutor. The participants are required to take a quiz that is created as a form of flash card. 
 
-- c. Test Score & Progress
+- d. Test Score & Progress
 The participants are able to view their own test scores and the average score of other participants in the study group, and the assignment progress of others. This section is designed to expose participants to others’ progres and give motivations by comparing themselves with others and feeling healthy pressure to complete their goals.
 
-- d. Assignment Submission
+- e. Assignment Submission
 Utilising the learning materials provided weekly by the tutor, the participants can do a self-paced study within a deadline and submit the assignment which will update the progress bar when the files are uploaded. Only the tutor can view the file and leave comments.
 
-- e. Comments
+- f. Comments
 It is designed to enable communications between the tutor and the participants. Unlike the instant messenger platform, it excluded the function that participants can communicate with each other. Most importantly, in order to validate the hypothesis, two groups were recruited; one group of people who want a feedback on their assignment from the tutor and the other group who don’t.
 
-- f. Assignment Submission Page
+- g. Assignment Submission Page
 On this page, participants can upload image files of the notes they took while watching the video class and an audio file that recorded their speaking practice, Once the files are uploaded, it marks the participant’s assignment as ‘completed’.  
 
-- g. Vocabulary Test Page
+- h. Vocabulary Test Page
 On the vocabulary test page, 30-50 words shortlisted by the tutor will be prompted randomly like a flash card. It can be attempted repeatedly, but the last attempt will be recorded as the final score. All the records is stored in the database for analysis of the change of the scores over time and if it has any relationship with the completion of the assignment.
