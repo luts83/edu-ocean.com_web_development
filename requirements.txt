@@ -19,7 +19,7 @@ jmespath==0.10.0
 Markdown==3.2.2
 minepy==1.2.4
 mysqlclient==1.4.6
-numpy==1.19.0
+numpy==1.22.0
 oauthlib==3.1.0
 Pillow==7.1.2
 python-dateutil==2.8.1
